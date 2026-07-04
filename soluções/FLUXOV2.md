@@ -1,6 +1,6 @@
 # Fluxo V2 — Plano completo de implementação e governança
 
-> **Estado da implementação em 2026-07-04:** Fase 0 ativa; infraestrutura das Fases 1–6 implementada em modo de auditoria e coberta por testes. A promoção para modo de publicação permanece bloqueada até aprovação humana do baseline e criação do primeiro commit Git. O gate também mantém uma alegação causal legada em revisão. Consulte `.kb/LEGACY_CAUSALITY_REVIEW.md`.
+> **Estado da implementação em 2026-07-04:** baseline aprovado no commit `17419bc`; Fases 0–6 implementadas e fluxo de publicação homologado pelo `RUN-2026-07-04-FLUXOV2-HOMOLOG`, publicado no commit `a5aa1f6`. Testes, checker, gates, revisão humana, lock e preservação de mudanças paralelas foram exercitados. Permanece aberta somente a migração das alegações causais legadas inventariadas em `.kb/LEGACY_CAUSALITY_REVIEW.md`.
 
 ## 1. Finalidade
 

@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "run_id": "RUN-2026-07-04-FLUXOV2-STATUS",
+  "objetivo": "Atualizar somente o estado factual de implementação após homologação",
+  "solicitante": "davis",
+  "criado_em": "2026-07-04T05:05:19.174114+00:00",
+  "risco": "baixo",
+  "fontes_planejadas": [],
+  "arquivos_permitidos": [
+    ".kb/runs/RUN-2026-07-04-FLUXOV2-STATUS/draft.md",
+    ".kb/runs/RUN-2026-07-04-FLUXOV2-STATUS/manifest.json",
+    ".kb/runs/RUN-2026-07-04-FLUXOV2-STATUS/review.json",
+    ".kb/runs/RUN-2026-07-04-FLUXOV2-STATUS/state.json",
+    ".kb/runs/RUN-2026-07-04-FLUXOV2-STATUS/validation.json",
+    "soluções/FLUXOV2.md"
+  ],
+  "operacoes_permitidas": [
+    "criar",
+    "editar"
+  ],
+  "operacoes_proibidas": [
+    "excluir",
+    "renomear",
+    "sincronizar"
+  ],
+  "estado_inicial_commit": "a5aa1f6eaf7dba941b418daf6c732f50260a07be",
+  "alteracoes_preexistentes": [],
+  "snapshot_preexistente": {},
+  "causalidade": [],
+  "aprovacoes_exigidas": []
+}

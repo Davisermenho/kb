@@ -1,0 +1,59 @@
+{
+  "run_id": "RUN-2026-07-04-FLUXOV2-STATUS",
+  "state": "PUBLICADO",
+  "updated_at": "2026-07-04T05:05:42.009861+00:00",
+  "history": [
+    {
+      "state": "RASCUNHO",
+      "at": "2026-07-04T05:05:19.182140+00:00"
+    },
+    {
+      "from": "RASCUNHO",
+      "state": "EXTRAÍDO",
+      "at": "2026-07-04T05:05:41.466044+00:00",
+      "reason": "Estado factual atualizado"
+    },
+    {
+      "from": "EXTRAÍDO",
+      "state": "AVALIADO",
+      "at": "2026-07-04T05:05:41.524152+00:00",
+      "reason": "Commits e RUN_ID conferidos"
+    },
+    {
+      "from": "AVALIADO",
+      "state": "ROTEAMENTO_PROPOSTO",
+      "at": "2026-07-04T05:05:41.584401+00:00",
+      "reason": "Alteração restrita ao documento do fluxo"
+    },
+    {
+      "from": "ROTEAMENTO_PROPOSTO",
+      "state": "APROVADO",
+      "at": "2026-07-04T05:05:41.640727+00:00",
+      "reason": "Atualização factual de baixo risco"
+    },
+    {
+      "from": "APROVADO",
+      "state": "PREPARADO",
+      "at": "2026-07-04T05:05:41.696861+00:00",
+      "reason": "Diff pronto para gates"
+    },
+    {
+      "from": "PREPARADO",
+      "state": "VALIDADO_ESTRUTURALMENTE",
+      "at": "2026-07-04T05:05:41.899902+00:00",
+      "reason": "Gates aprovados"
+    },
+    {
+      "from": "VALIDADO_ESTRUTURALMENTE",
+      "state": "VALIDADO_SEMANTICAMENTE",
+      "at": "2026-07-04T05:05:41.956378+00:00",
+      "reason": "Referências factuais conferidas"
+    },
+    {
+      "from": "VALIDADO_SEMANTICAMENTE",
+      "state": "PUBLICADO",
+      "at": "2026-07-04T05:05:42.009861+00:00",
+      "reason": "Atualização pronta para commit"
+    }
+  ]
+}
