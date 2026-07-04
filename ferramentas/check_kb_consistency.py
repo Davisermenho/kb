@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Valida estrutura e consistência entre o ledger e as KBs.
 
-Uso: python3 check_kb_consistency.py [diretorio] [--json]
+Uso: python3 ferramentas/check_kb_consistency.py [diretorio] [--json]
 
 Códigos: 0 = aprovado estruturalmente; 1 = divergências; 2 = falha operacional.
 Este programa não valida factualidade, fidelidade semântica, causalidade ou atualidade.
@@ -16,6 +16,8 @@ import unicodedata
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from urllib.parse import urlsplit, urlunsplit
+
+import kb_paths as paths
 
 
 VALID_ID_RE = re.compile(r"^FONTE-(19|20)\d{2}-[A-Z0-9]+-[A-Z0-9-]+$")
@@ -273,10 +275,10 @@ def validate_ledger(entries: list[Entry], directory: Path, issues: list[Issue]) 
 
 
 def discover_kbs(directory: Path, issues: list[Issue]) -> tuple[list[KbFile], int]:
-    paths = sorted(directory.glob("KB-*.md"))
+    kb_file_paths = paths.kb_paths(directory)
     files: list[KbFile] = []
     by_code: dict[str, list[KbFile]] = {}
-    for path in paths:
+    for path in kb_file_paths:
         match = KB_FILENAME_RE.fullmatch(path.name)
         if not match:
             issues.append(Issue("STRUCT-INVALID-KB-FILENAME", "structure", "nome não segue <KB_CODE>_<nome>.md", relative(path, directory), 1))
@@ -326,7 +328,7 @@ def validate(directory: Path) -> Report:
     directory = directory.resolve()
     if not directory.exists() or not directory.is_dir():
         raise OperationalError(f"diretório inválido: {directory}")
-    ledger_path = directory / "FONTES_REGISTRADAS.md"
+    ledger_path = directory / paths.LEDGER_PATH
     if not ledger_path.is_file():
         raise OperationalError(f"ledger não encontrado: {ledger_path}")
     report = Report(str(directory))
@@ -335,7 +337,7 @@ def validate(directory: Path) -> Report:
     report.ledger_entries = len(ledger_entries)
     validate_ledger(ledger_entries, directory, report.issues)
     kb_files, unique_codes = discover_kbs(directory, report.issues)
-    report.kb_files_found = len(list(directory.glob("KB-*.md")))
+    report.kb_files_found = len(paths.kb_paths(directory))
     report.kb_files_parsed = len(kb_files)
     report.kb_codes_unique = unique_codes
     validate_kbs(ledger_entries, kb_files, directory, report.issues)
@@ -363,7 +365,7 @@ def render(report: Report) -> str:
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("directory", nargs="?", type=Path, default=Path(__file__).parent)
+    parser.add_argument("directory", nargs="?", type=Path, default=Path(__file__).resolve().parents[1])
     parser.add_argument("--json", action="store_true", dest="as_json")
     return parser
 

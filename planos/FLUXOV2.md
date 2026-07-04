@@ -1,6 +1,40 @@
 # Fluxo V2 — Plano completo de implementação e governança
 
-> **Estado da implementação em 2026-07-04:** baseline aprovado no commit `17419bc`; Fases 0–6 implementadas e fluxo de publicação homologado pelo `RUN-2026-07-04-FLUXOV2-HOMOLOG`, publicado no commit `a5aa1f6`. Testes, checker, gates, revisão humana, lock e preservação de mudanças paralelas foram exercitados. Permanece aberta somente a migração das alegações causais legadas inventariadas em `.kb/LEGACY_CAUSALITY_REVIEW.md`.
+> **Estado auditado em 2026-07-04:** o núcleo do Fluxo V2 foi implementado e um fluxo real foi homologado, mas o plano completo ainda não está concluído. O baseline está no commit `17419bc`; a homologação com manifesto, gates e revisão humana está no `RUN-2026-07-04-FLUXOV2-HOMOLOG` e no commit `a5aa1f6`. As Fases 1–6 permanecem parciais nos pontos detalhados abaixo. Esta classificação substitui a afirmação anterior de que somente a causalidade legada estava pendente.
+
+## 0. Estado verificável da implementação
+
+Legenda: **Concluído** = requisito implementado e com evidência reproduzível; **Parcial** = existe implementação útil, mas faltam requisitos ou testes do próprio plano; **Pendente** = não há implementação suficiente para o critério.
+
+### 0.1 Estado por fase
+
+| Fase | Estado | Implementado e verificável | Ainda falta |
+|---|---|---|---|
+| 0 — Contenção | **Concluído** | Saídas delimitam validação estrutural; protocolo proíbe causalidade sem prova; resíduos estão inventariados. | Manter a contenção até a migração causal terminar. |
+| 1 — Proveniência e escopo | **Parcial** | Git e baseline; `RUN_ID`; manifesto; snapshot de alterações preexistentes; gate `ESCOPO_DIFF`. | Aplicar e testar integralmente convenções de branch/commit, exclusão/renomeação e separação de mudanças preexistentes em todos os cenários previstos. |
+| 2 — Transação lógica | **Parcial** | Rascunho fora do ledger; máquina de estados com transições explícitas; publicação exige validação aprovada. | Orquestrar a cadeia completa em um comando transacional e cobrir duplicata ambígua, conflito, múltiplas KBs, fonte maliciosa e falha parcial ponta a ponta. |
+| 3 — Gates e checker V2 | **Parcial** | Checker V2, orquestrador, relatório texto/JSON e 11 gates integrados; estrutura, score, roteamento e ledger↔KB são verificados. | Permitir execução individual de gates; validar DOI/hash, seções, IDs, commits e `CHANGE_ID`; publicar schema formal do relatório; ampliar testes negativos de cada gate. |
+| 4 — Semântica e causalidade | **Parcial** | Taxonomia no template/protocolo; gate bloqueia linguagem causal nova sem registro no manifesto; inventário legado existe. | Migrar as quatro alegações legadas; validar o conjunto causal completo; implementar claims críticos, referências semânticas e relatório de propagação; executar testes adversariais previstos. |
+| 5 — Revisão por risco | **Parcial** | Manifesto registra risco; gate exige revisão independente ou humana e vincula `review.json` ao hash do diff; homologação de risco alto teve revisão humana. | Implementar classificação de risco verificável e testar todos os níveis, autoaprovação, exclusão e invalidação da revisão após qualquer mudança. |
+| 6 — Concorrência e publicação | **Parcial** | Lock atômico com proprietário; hook local; CI; validação publish; artefatos auditáveis de homologação. | Expiração e diagnóstico de lock órfão; detector de mudança concorrente; comando completo de commit/publicação/recuperação; testes do hook (`0/1/2/timeout`); rollback; política local↔Drive explícita. |
+
+### 0.2 Evidências das ações concluídas
+
+| Ação concluída | Evidência versionada | Verificação reproduzível |
+|---|---|---|
+| Baseline revisado | commit `17419bc` | `git cat-file -e 17419bc^{commit}` |
+| Homologação do fluxo publish | commit `a5aa1f6` e `.kb/runs/RUN-2026-07-04-FLUXOV2-HOMOLOG/` | Inspecionar `manifest.json`, `state.json`, `validation.json` e `review.json`; todos os 11 gates do run estão `PASS` e a revisão é humana. |
+| Checker V2 | `ferramentas/check_kb_consistency.py` | `python3 ferramentas/check_kb_consistency.py .` retorna `0`, 12 fontes e 11 KBs na base atual. |
+| Orquestrador de gates | `ferramentas/kb_validate.py` | `python3 ferramentas/kb_validate.py .` retorna auditoria aprovada e declara explicitamente limites e o aviso causal legado. |
+| Rascunho, manifesto e estados | `ferramentas/kb_workflow.py` e runs em `.kb/runs/` | Testes `test_create_run_creates_manifest_and_draft` e `test_state_machine_accepts_sequence_and_rejects_jump`. |
+| Lock atômico e propriedade | `acquire_lock`/`release_lock` em `ferramentas/kb_workflow.py` | Teste `test_lock_is_atomic_and_owned`. Esta evidência não cobre expiração ou lock órfão. |
+| Revisão vinculada ao diff | gate `REVISAO` e `review.json` do run de homologação | O arquivo registra `tipo_revisor: humano`, decisão `APROVADO` e `diff_sha256`; o gate recalcula o hash. |
+| Hook bloqueante | `.claude/hooks/kb_consistency_hook.py` e `.claude/settings.json` | `python3 .claude/hooks/kb_consistency_hook.py` retorna `0` no estado válido; retorno não zero do validador é convertido em falha do hook. Faltam testes automatizados de erro e timeout. |
+| CI | `.github/workflows/kb-validation.yml` | O workflow executa testes, checker e auditoria em `push` e `pull_request`. A existência/configuração é verificável localmente; a execução remota deve ser confirmada no provedor de CI. |
+| Suíte automatizada atual | `tests/test_check_kb_consistency.py` e `tests/test_kb_workflow.py` | `python3 -m unittest discover -s tests -v` executa 19 testes com sucesso. |
+| Inventário causal | `.kb/LEGACY_CAUSALITY_REVIEW.md` | O arquivo enumera quatro ocorrências, responsável, estado e ação necessária; a auditoria atual mantém `CAUSALITY-LEGACY-REVIEW`. |
+
+Os comandos acima verificam somente o que está declarado em cada linha. Um run aprovado não é evidência automática de expiração de lock, sincronização, recuperação, todos os cenários adversariais ou verdade factual externa.
 
 ## 1. Finalidade
 
@@ -136,13 +170,13 @@ Transições devem ser explícitas. `Roteado` deixa de significar simultaneament
 
 | Artefato | Função |
 |---|---|
-| `PROTOCOLO.md` | Sequência operacional humana e agêntica. |
-| `REGISTRO_FONTES.md` | Arquitetura, enums, regras e matriz de roteamento. |
-| `TEMPLATE.md` | Schema legível do registro e réguas de avaliação. |
-| `FONTES_REGISTRADAS.md` | Ledger canônico de registros publicados. |
+| `governanca/PROTOCOLO.md` | Sequência operacional humana e agêntica. |
+| `governanca/REGISTRO_FONTES.md` | Arquitetura, enums, regras e matriz de roteamento. |
+| `governanca/TEMPLATE.md` | Schema legível do registro e réguas de avaliação. |
+| `conteudo/FONTES_REGISTRADAS.md` | Ledger canônico de registros publicados. |
 | `KB-*.md` | Conhecimento condensado publicado por domínio. |
-| `check_kb_consistency.py` | Checker V2 de estrutura, duplicidade e ledger↔KB. |
-| `kb_validate.py` | Orquestrador dos gates e gerador do relatório final. |
+| `ferramentas/check_kb_consistency.py` | Checker V2 de estrutura, duplicidade e ledger↔KB. |
+| `ferramentas/kb_validate.py` | Orquestrador dos gates e gerador do relatório final. |
 | `schema/` ou módulo equivalente | Enums, campos e regras determinísticas. |
 | `.kb/runs/<RUN_ID>/manifest.*` | Escopo, entrada, autorização e estado inicial. |
 | `.kb/runs/<RUN_ID>/draft.*` | Rascunho não canônico. |
@@ -175,9 +209,9 @@ Impedir que os riscos já comprovados continuem produzindo novos registros incor
    - `recomendação_não_implementada`;
    - `sem_relação_comprovada`.
 5. Bloquear criação de nova KB, alteração da matriz, mudança de template ou exclusão sem aprovação humana específica.
-6. Revisar os resíduos semânticos identificados pela auditoria em `FONTES_REGISTRADAS.md` e `KB-PROJ-05`, mas realizar as correções como tarefa separada e rastreável.
+6. Revisar os resíduos semânticos identificados pela auditoria em `conteudo/FONTES_REGISTRADAS.md` e `KB-PROJ-05`, mas realizar as correções como tarefa separada e rastreável.
 7. Criar checklist manual temporário para toda nova fonte enquanto o orquestrador não existir.
-8. Registrar que o plano de `SCRIPTV2.md` é o baseline da modernização do checker, não a solução completa do fluxo.
+8. Registrar que o plano de `planos/SCRIPTV2.md` é o baseline da modernização do checker, não a solução completa do fluxo.
 
 ### 7.3 Checklist temporário
 
@@ -329,7 +363,7 @@ Resultados ambíguos levam a `DUPLICATA_CANDIDATA` e revisão, não à criação
 
 ### 9.5 Rascunho
 
-- criar fora de `FONTES_REGISTRADAS.md` e das KBs;
+- criar fora de `conteudo/FONTES_REGISTRADAS.md` e das KBs;
 - permitir campos `PENDENTE` apenas no rascunho;
 - associar ao `RUN_ID`;
 - não ser considerado publicado pelo checker canônico;
@@ -381,9 +415,9 @@ Se uma escrita falhar:
 
 ### 9.10 Atualizações documentais
 
-- reescrever a ordem de `PROTOCOLO.md`;
-- alinhar o fluxo duplicado em `REGISTRO_FONTES.md`;
-- atualizar `TEMPLATE.md` com estados e classificações;
+- reescrever a ordem de `governanca/PROTOCOLO.md`;
+- alinhar o fluxo duplicado em `governanca/REGISTRO_FONTES.md`;
+- atualizar `governanca/TEMPLATE.md` com estados e classificações;
 - definir migração do campo `STATUS_DE_ROTEAMENTO`;
 - remover instruções contraditórias ou desatualizadas.
 
@@ -423,7 +457,7 @@ Converter regras verificáveis em controles executáveis, independentes e audit�
 
 ### 10.2 Orquestrador
 
-Implementar `kb_validate.py` com:
+Implementar `ferramentas/kb_validate.py` com:
 
 - execução individual ou completa dos gates;
 - saída humana em texto;
@@ -630,7 +664,7 @@ Reservar revisão humana e independente para os pontos em que automação não f
 |---|---|---|
 | Baixo | Ortografia, link interno sem mudança de sentido, metadado não decisório. | Gates automáticos. |
 | Médio | Nova fonte, nova síntese, atualização de bloco em KB existente. | Gates + revisão semântica independente. |
-| Alto | `PROTOCOLO.md`, `REGISTRO_FONTES.md`, `TEMPLATE.md`, checker, hook, taxonomia, causalidade. | Gates + aprovação humana. |
+| Alto | `governanca/PROTOCOLO.md`, `governanca/REGISTRO_FONTES.md`, `governanca/TEMPLATE.md`, checker, hook, taxonomia, causalidade. | Gates + aprovação humana. |
 | Crítico | Exclusão, sincronização destrutiva, segredo, permissão, migração irreversível, publicação externa. | Aprovação humana anterior e confirmação final. |
 
 O risco é calculado pelo maior impacto, não pela quantidade de linhas alteradas.
@@ -725,7 +759,7 @@ Antes de publicar:
 
 ### 13.4 Hooks e CI
 
-- hook local executa `kb_validate.py` no encerramento ou pre-commit adequado;
+- hook local executa `ferramentas/kb_validate.py` no encerramento ou pre-commit adequado;
 - CI executa a suíte completa em ambiente limpo;
 - hook não é considerado única proteção;
 - falha operacional do validador bloqueia, em vez de liberar silenciosamente;
@@ -954,7 +988,7 @@ O Fluxo V2 estará concluído somente quando:
 
 - [ ] todas as Fases 0–6 cumprirem seus critérios de aceite;
 - [ ] os documentos operacionais estiverem alinhados, sem ordens contraditórias;
-- [ ] o checker V2 e o orquestrador tiverem testes automatizados;
+- [x] o checker V2 e o orquestrador tiverem testes automatizados — evidência: 19 testes em `tests/`, executáveis com `python3 -m unittest discover -s tests -v`;
 - [ ] o fluxo ponta a ponta passar em ambiente temporário e na base real;
 - [ ] testes adversariais comprovarem bloqueio dos incidentes conhecidos;
 - [ ] hook e CI falharem de forma fechada;
@@ -962,6 +996,6 @@ O Fluxo V2 estará concluído somente quando:
 - [ ] concorrência e recuperação tiverem sido testadas;
 - [ ] política local↔Drive estiver decidida antes de qualquer sync automático;
 - [ ] documentação, código e comportamento observado forem equivalentes;
-- [ ] a autoridade humana aprovar a promoção do V2 para fluxo canônico.
+- [x] a autoridade humana aprovar a promoção do núcleo homologado — evidência: `.kb/runs/RUN-2026-07-04-FLUXOV2-HOMOLOG/review.json`, decisão `APROVADO`, revisor humano; esta aprovação não dispensa os demais critérios ainda abertos.
 
 Até que essa definição seja satisfeita, o sistema deve declarar explicitamente quais fases e gates estão ativos, evitando apresentar implementação parcial como solução completa.

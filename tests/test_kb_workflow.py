@@ -4,7 +4,7 @@ import unittest
 from pathlib import Path
 
 import sys
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "ferramentas"))
 
 import kb_workflow
 import kb_validate
@@ -54,7 +54,8 @@ class WorkflowTests(unittest.TestCase):
     def test_prewrite_duplicate_candidates(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            (root / "FONTES_REGISTRADAS.md").write_text(
+            (root / "conteudo").mkdir()
+            (root / "conteudo" / "FONTES_REGISTRADAS.md").write_text(
                 "# Ledger\n\n## Registros\n\n"
                 "### FONTE-2026-ORG-TEMA\n"
                 "- ID_FONTE: FONTE-2026-ORG-TEMA\n"
@@ -68,6 +69,12 @@ class WorkflowTests(unittest.TestCase):
             candidates = kb_workflow.duplicate_candidates(root, "Uma Fonte", "https://example.com/fonte/", None)
             self.assertEqual(candidates[0]["id_fonte"], "FONTE-2026-ORG-TEMA")
             self.assertEqual(set(candidates[0]["motivos"]), {"titulo", "url"})
+
+    def test_preflight_reports_missing_canonical_directories(self):
+        with tempfile.TemporaryDirectory() as directory:
+            gate = kb_validate.gate_preflight(Path(directory), False, None)
+            codes = {finding.code for finding in gate.findings}
+            self.assertIn("PREFLIGHT-MISSING-DIRECTORY", codes)
 
     def test_review_diff_excludes_run_artifacts(self):
         # Contrato estrutural: review.json/validation.json não podem alterar o

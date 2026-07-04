@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Orquestra gates independentes do Fluxo V2.
 
-Uso: python3 kb_validate.py [diretorio] [--json] [--publish] [--run-id ID]
+Uso: python3 ferramentas/kb_validate.py [diretorio] [--json] [--publish] [--run-id ID]
 """
 from __future__ import annotations
 
@@ -15,6 +15,7 @@ from dataclasses import asdict, dataclass, field
 from pathlib import Path
 
 import check_kb_consistency as checker
+import kb_paths as paths
 
 
 SCORE_FIELDS = {
@@ -108,16 +109,19 @@ def review_diff(root: Path, base: str, run_id: str) -> subprocess.CompletedProce
 
 
 def parse_ledger(root: Path, issues: list[checker.Issue] | None = None) -> list[checker.Entry]:
-    path = root / "FONTES_REGISTRADAS.md"
+    path = root / paths.LEDGER_PATH
     local_issues = issues if issues is not None else []
     return checker.parse_entries(checker.read_utf8(path), path, root, local_issues, ledger=True)
 
 
 def gate_preflight(root: Path, publish: bool, run_id: str | None) -> Gate:
     gate = Gate("PREFLIGHT")
-    for name in ("PROTOCOLO.md", "REGISTRO_FONTES.md", "TEMPLATE.md", "FONTES_REGISTRADAS.md"):
-        if not (root / name).is_file():
-            gate.add(Finding("PREFLIGHT-MISSING-FILE", f"arquivo obrigatório ausente: {name}", name))
+    for relative_path in paths.REQUIRED_DIRECTORIES:
+        if not (root / relative_path).is_dir():
+            gate.add(Finding("PREFLIGHT-MISSING-DIRECTORY", f"diretório obrigatório ausente: {relative_path}", str(relative_path)))
+    for relative_path in (*paths.REQUIRED_GOVERNANCE_FILES, paths.LEDGER_PATH):
+        if not (root / relative_path).is_file():
+            gate.add(Finding("PREFLIGHT-MISSING-FILE", f"arquivo obrigatório ausente: {relative_path}", str(relative_path)))
     git_check = git(root, "rev-parse", "--is-inside-work-tree")
     if git_check.returncode != 0:
         severity = "error" if publish else "warning"
@@ -202,7 +206,7 @@ def gate_score_status(root: Path) -> Gate:
 
 def gate_references(root: Path) -> Gate:
     gate = Gate("REFERENCIAS_INTERNAS")
-    files = [root / name for name in ("PROTOCOLO.md", "REGISTRO_FONTES.md", "TEMPLATE.md", "FONTES_REGISTRADAS.md")]
+    files = [root / item for item in (*paths.REQUIRED_GOVERNANCE_FILES, paths.LEDGER_PATH)]
     pattern = re.compile(r"`([^`\n]+\.md)`")
     for path in files:
         if not path.exists():
@@ -212,23 +216,28 @@ def gate_references(root: Path) -> Gate:
                 value = match.group(1)
                 # Paths com subdiretórios dentro de conteúdo extraído normalmente
                 # pertencem à fonte externa. Referências internas canônicas são
-                # arquivos Markdown no diretório raiz desta base.
-                if "/" not in value and (value.startswith("KB-") or value.isupper() or value in {p.name for p in root.glob("*.md")}):
-                    target = root / value
-                    if not target.exists():
+                # Nomes antigos sem diretório e caminhos canônicos são resolvidos.
+                known = {item.name: item for item in files + paths.kb_paths(root)}
+                canonical_prefixes = ("conteudo/", "governanca/", "planos/")
+                is_internal = value.startswith(canonical_prefixes) or (
+                    "/" not in value and (value.startswith("KB-") or value.isupper() or value in known)
+                )
+                if is_internal:
+                    target = root / value if "/" in value else known.get(value)
+                    if target is None or not target.exists():
                         gate.add(Finding("REFERENCE-MISSING-FILE", f"referência interna não resolve: {value}", path.name, line_number))
     return gate
 
 
 def gate_pending(root: Path) -> Gate:
     gate = Gate("PENDENCIAS")
-    architecture = checker.read_utf8(root / "REGISTRO_FONTES.md")
+    architecture = checker.read_utf8(root / paths.ARCHITECTURE_PATH)
     for entry in parse_ledger(root):
         routing = entry.fields.get("STATUS_DE_ROTEAMENTO")
         status = entry.fields.get("STATUS")
         needs_pending = routing in {"Revisar", "Bloqueado"} or status == "Revisar"
         if needs_pending and entry.heading_id not in architecture:
-            gate.add(Finding("PENDING-MISSING", f"'{entry.heading_id}' exige pendência, mas não aparece em REGISTRO_FONTES.md", entry.path.name, entry.line))
+            gate.add(Finding("PENDING-MISSING", f"'{entry.heading_id}' exige pendência, mas não aparece em {paths.ARCHITECTURE_PATH}", str(entry.path.relative_to(root)), entry.line))
     return gate
 
 
@@ -285,13 +294,14 @@ def gate_scope(root: Path, run_id: str | None) -> Gate:
 
 def gate_causality(root: Path, run_id: str | None) -> Gate:
     gate = Gate("CAUSALIDADE")
-    target = root / "KB-PROJ-05_Arquitetura_da_Base_de_Conhecimento.md"
+    target = root / paths.PROJECTS_DIR / "KB-PROJ-05_Arquitetura_da_Base_de_Conhecimento.md"
+    target_display = str(target.relative_to(root))
     if not target.exists():
         return gate
     if not run_id:
         for number, line in enumerate(checker.read_utf8(target).splitlines(), 1):
             if CAUSAL_WORDS.search(line) and "Correção" not in line:
-                gate.add(Finding("CAUSALITY-LEGACY-REVIEW", "alegação causal legada inventariada; migração pendente", target.name, number, severity="warning"))
+                gate.add(Finding("CAUSALITY-LEGACY-REVIEW", "alegação causal legada inventariada; migração pendente", target_display, number, severity="warning"))
         return gate
     try:
         manifest = load_manifest(root, run_id)
@@ -302,7 +312,7 @@ def gate_causality(root: Path, run_id: str | None) -> Gate:
     if not base:
         gate.add(Finding("CAUSALITY-MISSING-BASE", "não é possível validar causalidade sem commit inicial"))
         return gate
-    diff = git(root, "diff", "--cached", "--unified=0", base, "--", target.name)
+    diff = git(root, "diff", "--cached", "--unified=0", base, "--", str(target.relative_to(root)))
     if diff.returncode != 0:
         gate.add(Finding("CAUSALITY-GIT-ERROR", diff.stderr.strip() or "git diff falhou"))
         return gate
@@ -317,7 +327,7 @@ def gate_causality(root: Path, run_id: str | None) -> Gate:
             for record in records
         )
         if not valid:
-            gate.add(Finding("CAUSALITY-UNVERIFIED", "linha causal nova exige registro completo no manifesto", target.name))
+            gate.add(Finding("CAUSALITY-UNVERIFIED", "linha causal nova exige registro completo no manifesto", target_display))
     return gate
 
 
@@ -397,7 +407,7 @@ def render(report: ValidationReport) -> str:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("directory", nargs="?", type=Path, default=Path(__file__).parent)
+    parser.add_argument("directory", nargs="?", type=Path, default=Path(__file__).resolve().parents[1])
     parser.add_argument("--json", action="store_true")
     parser.add_argument("--publish", action="store_true")
     parser.add_argument("--run-id")

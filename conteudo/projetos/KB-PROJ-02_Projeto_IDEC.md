@@ -1,10 +1,10 @@
-# KB-PROJ-03 — Vídeo Motivacional 2026
+# KB-PROJ-02 — Projeto IDEC
 
 ## Escopo
-Conhecimento Específico. Conteúdo aplicado diretamente ao vídeo motivacional de 2026 — só vale para este vídeo específico.
+Conhecimento Específico. Informação sobre IDEC, atletas, público, contexto institucional ou identidade esportiva do projeto — só vale para o projeto IDEC.
 
 ## Regras de uso deste arquivo
-Este arquivo só deve ser editado seguindo o Passo 6 de `PROTOCOLO.md` (escrita idempotente): um bloco novo por `ID_FONTE`, nunca sobrescrevendo o arquivo inteiro. Ao editar um `ID_FONTE` já existente, atualize o bloco correspondente em vez de duplicá-lo.
+Este arquivo só deve ser editado seguindo o Passo 6 de `governanca/PROTOCOLO.md` (escrita idempotente): um bloco novo por `ID_FONTE`, nunca sobrescrevendo o arquivo inteiro. Ao editar um `ID_FONTE` já existente, atualize o bloco correspondente em vez de duplicá-lo.
 
 Formato de bloco (um por fonte registrada):
 

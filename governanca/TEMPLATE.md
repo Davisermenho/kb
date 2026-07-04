@@ -94,7 +94,7 @@ Se qualquer critério mínimo falhar, a fonte não deve ser usada como base fort
 
 ## 7. Exemplo preenchido
 
-- **ID_FONTE:** FONTE-2026-VENDOR-PROMPT-BEST-PRACTICES (formato: `FONTE-<ANO>-<VEÍCULO_ABREVIADO>-<TEMA_CURTO>`; nunca use contador sequencial genérico como `FONTE-001` — ver `REGISTRO_FONTES.md` seção 9)
+- **ID_FONTE:** FONTE-2026-VENDOR-PROMPT-BEST-PRACTICES (formato: `FONTE-<ANO>-<VEÍCULO_ABREVIADO>-<TEMA_CURTO>`; nunca use contador sequencial genérico como `FONTE-001` — ver `governanca/REGISTRO_FONTES.md` seção 9)
 - **DATA_REGISTRO:** 2026-06-30
 - **RESPONSÁVEL:** Davi Sermenho
 - **TÍTULO:** Documentação oficial sobre boas práticas de prompts e uso de contexto em modelos generativos

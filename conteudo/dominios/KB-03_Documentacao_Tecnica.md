@@ -4,7 +4,7 @@
 Conhecimento Permanente. Manual, norma, documentação técnica, critérios de aceite, rastreabilidade ou template — organiza instruções, registros, guias, governança ou documentação.
 
 ## Regras de uso deste arquivo
-Este arquivo só deve ser editado seguindo o Passo 6 de `PROTOCOLO.md` (escrita idempotente): um bloco novo por `ID_FONTE`, nunca sobrescrevendo o arquivo inteiro. Ao editar um `ID_FONTE` já existente, atualize o bloco correspondente em vez de duplicá-lo.
+Este arquivo só deve ser editado seguindo o Passo 6 de `governanca/PROTOCOLO.md` (escrita idempotente): um bloco novo por `ID_FONTE`, nunca sobrescrevendo o arquivo inteiro. Ao editar um `ID_FONTE` já existente, atualize o bloco correspondente em vez de duplicá-lo.
 
 Formato de bloco (um por fonte registrada):
 
@@ -56,7 +56,7 @@ Formato de bloco (um por fonte registrada):
 
 ### FONTE-2017-GOOGLE-SRE-POSTMORTEM-CULTURE — Site Reliability Engineering, Cap. 13 "Emergency Response" + Cap. 14 "Managing Incidents" + Cap. 15 "Postmortem Culture" + Apêndice D "Example Postmortem"
 - Nível de confiança: Fonte forte (21/21)
-- Conteúdo extraído: O Apêndice D dá um template de postmortem completo — Date/Authors/Status/Summary/Impact/Root Causes/Trigger/Resolution/Detection, Action Items (Ação/Tipo/Owner/Bug-status), Lessons Learned, Timeline. O Cap. 14 descreve o "Live Incident State Document" — documento vivo, editável concorrentemente, template-based, info mais importante no topo — comparável à nossa `FONTES_REGISTRADAS.md`. O Cap. 13 traz 3 casos reais de emergência, cada um com a mesma estrutura Details/Response/Findings.
+- Conteúdo extraído: O Apêndice D dá um template de postmortem completo — Date/Authors/Status/Summary/Impact/Root Causes/Trigger/Resolution/Detection, Action Items (Ação/Tipo/Owner/Bug-status), Lessons Learned, Timeline. O Cap. 14 descreve o "Live Incident State Document" — documento vivo, editável concorrentemente, template-based, info mais importante no topo — comparável à nossa `conteudo/FONTES_REGISTRADAS.md`. O Cap. 13 traz 3 casos reais de emergência, cada um com a mesma estrutura Details/Response/Findings.
 - Aplicação: Benchmark de template de documentação de incidente/decisão técnica com rastreabilidade completa (causa, ação, dono, status). O "Live Incident State Document" — documento vivo, editável concorrentemente, template-based, informação mais importante no topo — é um modelo geral para qualquer ledger ou registro operacional compartilhado.
 - Limitações: O incidente do Apêndice D ("Shakespeare Sonnet++") é fictício/humorístico; os 3 casos do Cap. 13 são apresentados como reais, sem nomes fictícios. Capítulos de 2017; ferramentas internas citadas (Google Docs, IRC) são datadas, mas os princípios permanecem padrão da indústria.
 - Última atualização: 2026-07-03

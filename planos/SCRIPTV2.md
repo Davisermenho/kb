@@ -1,10 +1,10 @@
-# Plano de ações — `check_kb_consistency.py` V2
+# Plano de ações — `ferramentas/check_kb_consistency.py` V2
 
 ## 1. Objetivo
 
-Criar uma segunda versão do verificador de consistência entre `FONTES_REGISTRADAS.md` e os arquivos `KB-*.md`, eliminando os falsos resultados `OK` identificados após a revisão do script atual.
+Criar uma segunda versão do verificador de consistência entre `conteudo/FONTES_REGISTRADAS.md` e os arquivos `KB-*.md`, eliminando os falsos resultados `OK` identificados após a revisão do script atual.
 
-A V2 deve continuar sendo uma ferramenta somente leitura, baseada apenas na biblioteca padrão do Python, mas deve validar tanto a estrutura mínima dos documentos quanto as sete regras de consistência já documentadas em `LEDGER_KB_VERIFY.md`.
+A V2 deve continuar sendo uma ferramenta somente leitura, baseada apenas na biblioteca padrão do Python, mas deve validar tanto a estrutura mínima dos documentos quanto as sete regras de consistência já documentadas em `governanca/LEDGER_KB_VERIFY.md`.
 
 O resultado esperado é simples: o script só pode retornar sucesso quando conseguiu interpretar os arquivos relevantes sem ambiguidades e não encontrou divergências estruturais ou de roteamento.
 
@@ -25,7 +25,7 @@ O resultado esperado é simples: o script só pode retornar sucesso quando conse
 ### Fora do escopo
 
 - Corrigir arquivos automaticamente.
-- Alterar `FONTES_REGISTRADAS.md` ou qualquer `KB-*.md`.
+- Alterar `conteudo/FONTES_REGISTRADAS.md` ou qualquer `KB-*.md`.
 - Verificar a fidelidade semântica entre o conteúdo condensado da KB e a fonte original.
 - Validar factualidade, qualidade da síntese ou pontuação atribuída à fonte.
 - Usar rede, banco de dados, parser Markdown externo ou dependências de terceiros.
@@ -307,7 +307,7 @@ Adicionar, no mínimo, os seguintes casos:
 Executar V1 e V2 no diretório atual e comparar resultados:
 
 ```bash
-python3 check_kb_consistency.py /home/davis/dev/kb
+python3 ferramentas/check_kb_consistency.py /home/davis/dev/kb
 python3 check_kb_consistency_v2.py /home/davis/dev/kb
 ```
 
@@ -326,9 +326,9 @@ Não adaptar o parser apenas para fazer a base passar: toda exceção aceita dev
 
 Após estabilizar o comportamento:
 
-- atualizar `LEDGER_KB_VERIFY.md` com contrato, novos erros estruturais e códigos de saída;
+- atualizar `governanca/LEDGER_KB_VERIFY.md` com contrato, novos erros estruturais e códigos de saída;
 - atualizar a docstring e o uso no próprio script;
-- revisar `PROTOCOLO.md` e `REGISTRO_FONTES.md` para que “consistente” tenha o mesmo significado;
+- revisar `governanca/PROTOCOLO.md` e `governanca/REGISTRO_FONTES.md` para que “consistente” tenha o mesmo significado;
 - documentar exatamente os estilos de campo aceitos;
 - registrar explicitamente que a V2 não verifica fidelidade semântica;
 - incluir comandos para rodar a suíte de testes.
@@ -351,7 +351,7 @@ Somente depois da aprovação da base real e da documentação:
 
 Depois do período de comparação:
 
-- promover a V2 para `check_kb_consistency.py`, preservando o comando público existente;
+- promover a V2 para `ferramentas/check_kb_consistency.py`, preservando o comando público existente;
 - manter histórico pelo controle de versão, sem conservar duas implementações indefinidamente;
 - remover referências temporárias a `_v2`;
 - executar novamente testes, checker e simulação do hook.
@@ -387,9 +387,9 @@ A V2 estará concluída quando todos os itens abaixo forem verdadeiros:
 - [ ] Códigos de saída `0`, `1` e `2` obedecem ao contrato.
 - [ ] A suíte automatizada passa integralmente.
 - [ ] A base real foi homologada e eventuais diferenças foram explicadas.
-- [ ] `LEDGER_KB_VERIFY.md` descreve fielmente a implementação final.
+- [ ] `governanca/LEDGER_KB_VERIFY.md` descreve fielmente a implementação final.
 - [ ] O hook foi testado nos três resultados possíveis.
-- [ ] O comando público continua sendo `python3 check_kb_consistency.py [diretorio]`.
+- [ ] O comando público continua sendo `python3 ferramentas/check_kb_consistency.py [diretorio]`.
 
 ## 9. Riscos e controles
 
@@ -407,8 +407,8 @@ A V2 estará concluída quando todos os itens abaixo forem verdadeiros:
 1. `check_kb_consistency_v2.py` durante o desenvolvimento.
 2. Suíte automatizada em `tests/test_check_kb_consistency.py` ou nome equivalente.
 3. Relatório curto de comparação V1 versus V2 sobre a base real.
-4. `LEDGER_KB_VERIFY.md` atualizado.
+4. `governanca/LEDGER_KB_VERIFY.md` atualizado.
 5. Hook atualizado e validado.
-6. V2 promovida ao nome canônico `check_kb_consistency.py` após homologação.
+6. V2 promovida ao nome canônico `ferramentas/check_kb_consistency.py` após homologação.
 
 Este plano não autoriza correções automáticas no ledger ou nas KBs. Qualquer divergência encontrada durante a homologação deve ser revisada e corrigida separadamente, preservando o caráter somente leitura do checker.

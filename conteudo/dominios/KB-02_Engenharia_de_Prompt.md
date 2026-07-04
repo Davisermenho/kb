@@ -4,7 +4,7 @@
 Conhecimento Permanente. Engenharia de prompts — serve para criar, avaliar, refinar ou validar prompts em qualquer projeto ou ferramenta.
 
 ## Regras de uso deste arquivo
-Este arquivo só deve ser editado seguindo o Passo 6 de `PROTOCOLO.md` (escrita idempotente): um bloco novo por `ID_FONTE`, nunca sobrescrevendo o arquivo inteiro. Ao editar um `ID_FONTE` já existente, atualize o bloco correspondente em vez de duplicá-lo.
+Este arquivo só deve ser editado seguindo o Passo 6 de `governanca/PROTOCOLO.md` (escrita idempotente): um bloco novo por `ID_FONTE`, nunca sobrescrevendo o arquivo inteiro. Ao editar um `ID_FONTE` já existente, atualize o bloco correspondente em vez de duplicá-lo.
 
 Formato de bloco (um por fonte registrada):
 

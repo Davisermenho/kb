@@ -6,7 +6,8 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SPEC = importlib.util.spec_from_file_location("checker", ROOT / "check_kb_consistency.py")
+sys.path.insert(0, str(ROOT / "ferramentas"))
+SPEC = importlib.util.spec_from_file_location("checker", ROOT / "ferramentas" / "check_kb_consistency.py")
 checker = importlib.util.module_from_spec(SPEC)
 assert SPEC.loader
 sys.modules[SPEC.name] = checker
@@ -30,8 +31,10 @@ class CheckerTests(unittest.TestCase):
     def make_base(self, entry=None, kb_id="FONTE-2026-ORG-TEMA"):
         temp = tempfile.TemporaryDirectory()
         root = Path(temp.name)
-        (root / "FONTES_REGISTRADAS.md").write_text("# Ledger\n\n## Registros\n\n" + (entry or ledger_entry()), encoding="utf-8")
-        (root / "KB-01_Teste.md").write_text(f"# KB\n\n## Registros\n\n### {kb_id}\n- Conteúdo: teste\n", encoding="utf-8")
+        (root / "conteudo" / "dominios").mkdir(parents=True)
+        (root / "conteudo" / "projetos").mkdir()
+        (root / "conteudo" / "FONTES_REGISTRADAS.md").write_text("# Ledger\n\n## Registros\n\n" + (entry or ledger_entry()), encoding="utf-8")
+        (root / "conteudo" / "dominios" / "KB-01_Teste.md").write_text(f"# KB\n\n## Registros\n\n### {kb_id}\n- Conteúdo: teste\n", encoding="utf-8")
         return temp, root
 
     def codes(self, report):
@@ -45,7 +48,7 @@ class CheckerTests(unittest.TestCase):
     def test_missing_registros_fails_closed(self):
         temp, root = self.make_base()
         self.addCleanup(temp.cleanup)
-        (root / "FONTES_REGISTRADAS.md").write_text("# Ledger\n", encoding="utf-8")
+        (root / "conteudo" / "FONTES_REGISTRADAS.md").write_text("# Ledger\n", encoding="utf-8")
         self.assertIn("STRUCT-MISSING-SECTION", self.codes(checker.validate(root)))
 
     def test_missing_required_field(self):
@@ -61,7 +64,7 @@ class CheckerTests(unittest.TestCase):
     def test_empty_kb_placeholder_is_allowed(self):
         temp, root = self.make_base()
         self.addCleanup(temp.cleanup)
-        (root / "KB-02_Vazia.md").write_text(
+        (root / "conteudo" / "dominios" / "KB-02_Vazia.md").write_text(
             "# KB\n\n## Registros\n\n_Nenhum registro até o momento._\n",
             encoding="utf-8",
         )
@@ -80,7 +83,7 @@ class CheckerTests(unittest.TestCase):
     def test_duplicate_kb_code_is_not_overwritten(self):
         temp, root = self.make_base()
         self.addCleanup(temp.cleanup)
-        (root / "KB-01_Outra.md").write_text("# KB\n\n## Registros\n", encoding="utf-8")
+        (root / "conteudo" / "projetos" / "KB-01_Outra.md").write_text("# KB\n\n## Registros\n", encoding="utf-8")
         report = checker.validate(root)
         self.assertEqual(report.kb_files_found, 2)
         self.assertIn("STRUCT-DUPLICATE-KB-CODE", self.codes(report))
@@ -93,7 +96,7 @@ class CheckerTests(unittest.TestCase):
         })
         temp, root = self.make_base(first + "\n" + second)
         self.addCleanup(temp.cleanup)
-        (root / "KB-01_Teste.md").write_text(
+        (root / "conteudo" / "dominios" / "KB-01_Teste.md").write_text(
             "# KB\n\n## Registros\n\n### FONTE-2026-ORG-TEMA\n- Conteúdo: a\n\n### FONTE-2026-ORG-OUTRO\n- Conteúdo: b\n",
             encoding="utf-8",
         )

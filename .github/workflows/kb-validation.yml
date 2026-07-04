@@ -18,6 +18,6 @@ jobs:
       - name: Unit and integration tests
         run: python3 -m unittest discover -s tests -v
       - name: Structural checker
-        run: python3 check_kb_consistency.py .
+        run: python3 ferramentas/check_kb_consistency.py .
       - name: Audit gates
-        run: python3 kb_validate.py .
+        run: python3 ferramentas/kb_validate.py .

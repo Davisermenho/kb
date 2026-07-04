@@ -4,16 +4,16 @@
 
 O projeto usa dois níveis de validação:
 
-1. `check_kb_consistency.py`: estrutura, duplicidade, códigos de KB e presença bidirecional ledger↔KB.
-2. `kb_validate.py`: orquestra o checker e os gates adicionais do Fluxo V2.
+1. `ferramentas/check_kb_consistency.py`: estrutura, duplicidade, códigos de KB e presença bidirecional ledger↔KB.
+2. `ferramentas/kb_validate.py`: orquestra o checker e os gates adicionais do Fluxo V2.
 
 Nenhum deles prova, sozinho, verdade factual externa, fidelidade semântica integral ou julgamento humano de conflitos.
 
 ## 2. Checker estrutural V2
 
 ```bash
-python3 check_kb_consistency.py [diretorio]
-python3 check_kb_consistency.py [diretorio] --json
+python3 ferramentas/check_kb_consistency.py [diretorio]
+python3 ferramentas/check_kb_consistency.py [diretorio] --json
 ```
 
 Códigos:
@@ -46,9 +46,9 @@ NÃO VERIFICADO: factualidade, fidelidade semântica, causalidade, escopo e atua
 ## 3. Orquestrador
 
 ```bash
-python3 kb_validate.py [diretorio]
-python3 kb_validate.py [diretorio] --json
-python3 kb_validate.py [diretorio] --publish --run-id RUN-...
+python3 ferramentas/kb_validate.py [diretorio]
+python3 ferramentas/kb_validate.py [diretorio] --json
+python3 ferramentas/kb_validate.py [diretorio] --publish --run-id RUN-...
 ```
 
 Gates:
@@ -70,11 +70,11 @@ No modo auditoria, gates dependentes de `RUN_ID` aparecem como `SKIPPED` e não 
 ## 4. RUN_ID, rascunho e manifesto
 
 ```bash
-python3 kb_workflow.py init-run \
+python3 ferramentas/kb_workflow.py --directory . init-run \
   --run-id RUN-2026-EXEMPLO \
   --objective "Registrar uma fonte" \
   --risk medio \
-  --file FONTES_REGISTRADAS.md \
+  --file conteudo/FONTES_REGISTRADAS.md \
   --file KB-01_Engenharia_de_Contexto.md \
   --operation editar
 ```
@@ -91,7 +91,7 @@ Antes de validar em modo de publicação, avance o run pelas transições válid
 Antes de criar um ID, procure candidatos:
 
 ```bash
-python3 kb_workflow.py check-source \
+python3 ferramentas/kb_workflow.py --directory . check-source \
   --title "Título da fonte" \
   --url "https://exemplo" \
   --author "Organização"
@@ -102,15 +102,15 @@ Encontrar candidato retorna código `1` e exige reutilização do ID ou decisão
 ## 5. Lock
 
 ```bash
-python3 kb_workflow.py lock --run-id RUN-...
-python3 kb_workflow.py unlock --run-id RUN-...
+python3 ferramentas/kb_workflow.py --directory . lock --run-id RUN-...
+python3 ferramentas/kb_workflow.py --directory . unlock --run-id RUN-...
 ```
 
 O lock possui proprietário. Uma execução não pode remover o lock de outra. Lock ambíguo ou órfão exige revisão; não deve ser apagado automaticamente.
 
 ## 6. Hook e CI
 
-O hook `.claude/hooks/kb_consistency_hook.py` resolve o diretório de forma portátil e executa `kb_validate.py` em modo auditoria. Retorno diferente de zero é traduzido para `exit 2`, bloqueando o encerramento no Claude Code.
+O hook `.claude/hooks/kb_consistency_hook.py` resolve o diretório de forma portátil e executa `ferramentas/kb_validate.py` em modo auditoria. Retorno diferente de zero é traduzido para `exit 2`, bloqueando o encerramento no Claude Code.
 
 O workflow `.github/workflows/kb-validation.yml` executa testes, checker e gates de auditoria. Hook e CI são defesa adicional; não substituem o modo de publicação com `RUN_ID`.
 
@@ -118,8 +118,8 @@ O workflow `.github/workflows/kb-validation.yml` executa testes, checker e gates
 
 ```bash
 python3 -m unittest discover -s tests -v
-python3 check_kb_consistency.py .
-python3 kb_validate.py .
+python3 ferramentas/check_kb_consistency.py .
+python3 ferramentas/kb_validate.py .
 echo '{}' | python3 .claude/hooks/kb_consistency_hook.py
 ```
 

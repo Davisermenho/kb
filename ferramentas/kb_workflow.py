@@ -15,6 +15,7 @@ from pathlib import Path
 
 import kb_validate
 import check_kb_consistency as checker
+import kb_paths as paths
 
 
 VALID_RISK = {"baixo", "medio", "alto", "critico"}
@@ -203,7 +204,7 @@ def command_transition(args: argparse.Namespace) -> int:
 
 
 def duplicate_candidates(root: Path, title: str | None, url: str | None, author: str | None) -> list[dict]:
-    ledger_path = root / "FONTES_REGISTRADAS.md"
+    ledger_path = root / paths.LEDGER_PATH
     issues: list[checker.Issue] = []
     entries = checker.parse_entries(checker.read_utf8(ledger_path), ledger_path, root, issues, ledger=True)
     if issues:
@@ -233,7 +234,7 @@ def command_candidates(args: argparse.Namespace) -> int:
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--directory", type=Path, default=Path(__file__).parent)
+    parser.add_argument("--directory", type=Path, default=Path(__file__).resolve().parents[1])
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     init = subparsers.add_parser("init-run")

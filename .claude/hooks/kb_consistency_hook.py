@@ -8,7 +8,7 @@ from pathlib import Path
 
 
 KB_DIR = Path(__file__).resolve().parents[2]
-VALIDATOR = KB_DIR / "kb_validate.py"
+VALIDATOR = KB_DIR / "ferramentas" / "kb_validate.py"
 
 
 def main() -> int:
