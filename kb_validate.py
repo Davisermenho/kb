@@ -86,7 +86,25 @@ class ValidationReport:
 
 
 def git(root: Path, *args: str) -> subprocess.CompletedProcess[str]:
-    return subprocess.run(["git", *args], cwd=root, text=True, capture_output=True)
+    return subprocess.run(
+        ["git", "-c", "core.quotepath=false", *args],
+        cwd=root,
+        text=True,
+        capture_output=True,
+    )
+
+
+def review_diff(root: Path, base: str, run_id: str) -> subprocess.CompletedProcess[str]:
+    return git(
+        root,
+        "diff",
+        "--cached",
+        "--binary",
+        base,
+        "--",
+        ".",
+        f":(exclude).kb/runs/{run_id}/**",
+    )
 
 
 def parse_ledger(root: Path, issues: list[checker.Issue] | None = None) -> list[checker.Entry]:
@@ -108,6 +126,15 @@ def gate_preflight(root: Path, publish: bool, run_id: str | None) -> Gate:
         gate.add(Finding("PREFLIGHT-MISSING-RUN", "modo de publicação exige --run-id"))
     if run_id and not (root / ".kb" / "runs" / run_id / "manifest.json").is_file():
         gate.add(Finding("PREFLIGHT-MISSING-MANIFEST", f"manifesto do RUN_ID '{run_id}' não encontrado"))
+    if publish and run_id:
+        state_path = root / ".kb" / "runs" / run_id / "state.json"
+        try:
+            state = json.loads(state_path.read_text(encoding="utf-8")).get("state")
+        except (OSError, ValueError):
+            gate.add(Finding("PREFLIGHT-INVALID-STATE", "state.json ausente ou inválido"))
+        else:
+            if state != "PREPARADO":
+                gate.add(Finding("PREFLIGHT-WRONG-STATE", f"validação publish exige PREPARADO; estado atual: {state}"))
     return gate
 
 
@@ -225,7 +252,7 @@ def gate_scope(root: Path, run_id: str | None) -> Gate:
     if not base:
         gate.add(Finding("SCOPE-MISSING-BASE", "manifesto não possui estado_inicial_commit"))
         return gate
-    result = git(root, "diff", "--name-status", base, "--")
+    result = git(root, "diff", "--cached", "--name-status", base, "--")
     if result.returncode != 0:
         gate.add(Finding("SCOPE-GIT-ERROR", result.stderr.strip() or "git diff falhou"))
         return gate
@@ -233,7 +260,11 @@ def gate_scope(root: Path, run_id: str | None) -> Gate:
     operations = set(manifest.get("operacoes_permitidas", []))
     preexisting = manifest.get("snapshot_preexistente", {})
     operation_by_status = {"A": "criar", "M": "editar", "D": "excluir", "R": "renomear"}
-    for line in result.stdout.splitlines():
+    changed_lines = result.stdout.splitlines()
+    if not changed_lines:
+        gate.add(Finding("SCOPE-NOTHING-STAGED", "nenhuma mudança foi preparada no índice Git"))
+        return gate
+    for line in changed_lines:
         parts = line.split("\t")
         status = parts[0][0]
         paths = parts[1:]
@@ -271,7 +302,7 @@ def gate_causality(root: Path, run_id: str | None) -> Gate:
     if not base:
         gate.add(Finding("CAUSALITY-MISSING-BASE", "não é possível validar causalidade sem commit inicial"))
         return gate
-    diff = git(root, "diff", "--unified=0", base, "--", target.name)
+    diff = git(root, "diff", "--cached", "--unified=0", base, "--", target.name)
     if diff.returncode != 0:
         gate.add(Finding("CAUSALITY-GIT-ERROR", diff.stderr.strip() or "git diff falhou"))
         return gate
@@ -320,7 +351,7 @@ def gate_review(root: Path, run_id: str | None) -> Gate:
         gate.add(Finding("REVIEW-HUMAN-REQUIRED", f"risco '{risk}' exige revisor humano", str(review_path.relative_to(root))))
     base = manifest.get("estado_inicial_commit")
     if base:
-        diff = git(root, "diff", "--binary", base, "--")
+        diff = review_diff(root, base, run_id)
         if diff.returncode == 0:
             digest = hashlib.sha256(diff.stdout.encode("utf-8")).hexdigest()
             if review.get("diff_sha256") != digest:

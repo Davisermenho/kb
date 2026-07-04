@@ -86,6 +86,8 @@ Isso cria:
 
 O rascunho não é conteúdo publicado. A publicação exige baseline Git, manifesto, diff dentro do escopo e revisão proporcional ao risco.
 
+Antes de validar em modo de publicação, avance o run pelas transições válidas até `PREPARADO` e prepare no índice Git somente os arquivos do manifesto. Os gates validam o diff staged; alterações paralelas não staged permanecem fora da publicação. O hash da revisão cobre esse diff de produto e exclui os artefatos autorreferentes do próprio diretório do run.
+
 Antes de criar um ID, procure candidatos:
 
 ```bash

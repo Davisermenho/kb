@@ -1,0 +1,13 @@
+{
+  "run_id": "RUN-2026-07-04-FLUXOV2-HOMOLOG",
+  "revisor": "responsável humano do projeto",
+  "tipo_revisor": "humano",
+  "data": "2026-07-04",
+  "decisao": "APROVADO",
+  "diff_sha256": "9e869413b6e395b3902eb772cdf1952c8b17b2a50d2be9f6c3ac072c3ca9f8ff",
+  "diff_sha256_apresentado": "e4c25d2acaa20020093f446e444ac2bd04f8447201e6e1309dcfc8d572e25f1f",
+  "ressalvas": [
+    "A aprovação inclui a remoção dos arquivos explicitamente listados pelo responsável humano.",
+    "Os dois hashes representam o mesmo diff; o hash canônico preserva os caminhos Unicode e o apresentado usa o quoting padrão do Git."
+  ]
+}

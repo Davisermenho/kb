@@ -7,6 +7,7 @@ import sys
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 import kb_workflow
+import kb_validate
 
 
 class WorkflowTests(unittest.TestCase):
@@ -16,7 +17,8 @@ class WorkflowTests(unittest.TestCase):
             run = kb_workflow.create_run(root, "RUN-TEST", "Testar", "medio", ["A.md"], ["editar"])
             manifest = json.loads((run / "manifest.json").read_text(encoding="utf-8"))
             self.assertEqual(manifest["run_id"], "RUN-TEST")
-            self.assertEqual(manifest["arquivos_permitidos"], ["A.md"])
+            self.assertIn("A.md", manifest["arquivos_permitidos"])
+            self.assertIn(".kb/runs/RUN-TEST/manifest.json", manifest["arquivos_permitidos"])
             self.assertEqual(manifest["causalidade"], [])
             self.assertIn("RASCUNHO", (run / "draft.md").read_text(encoding="utf-8"))
             state = json.loads((run / "state.json").read_text(encoding="utf-8"))
@@ -66,6 +68,13 @@ class WorkflowTests(unittest.TestCase):
             candidates = kb_workflow.duplicate_candidates(root, "Uma Fonte", "https://example.com/fonte/", None)
             self.assertEqual(candidates[0]["id_fonte"], "FONTE-2026-ORG-TEMA")
             self.assertEqual(set(candidates[0]["motivos"]), {"titulo", "url"})
+
+    def test_review_diff_excludes_run_artifacts(self):
+        # Contrato estrutural: review.json/validation.json não podem alterar o
+        # hash do produto que a própria revisão precisa assinar.
+        source = Path(kb_validate.__file__).read_text(encoding="utf-8")
+        self.assertIn(":(exclude).kb/runs/{run_id}/**", source)
+        self.assertIn("core.quotepath=false", source)
 
 
 if __name__ == "__main__":

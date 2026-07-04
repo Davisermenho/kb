@@ -1,0 +1,59 @@
+{
+  "run_id": "RUN-2026-07-04-FLUXOV2-HOMOLOG",
+  "state": "PUBLICADO",
+  "updated_at": "2026-07-04T05:04:59.841970+00:00",
+  "history": [
+    {
+      "state": "RASCUNHO",
+      "at": "2026-07-04T04:49:03.267968+00:00"
+    },
+    {
+      "from": "RASCUNHO",
+      "state": "EXTRAÍDO",
+      "at": "2026-07-04T04:49:52.174210+00:00",
+      "reason": "Código e documentação preparados"
+    },
+    {
+      "from": "EXTRAÍDO",
+      "state": "AVALIADO",
+      "at": "2026-07-04T04:49:52.224478+00:00",
+      "reason": "Testes unitários executados"
+    },
+    {
+      "from": "AVALIADO",
+      "state": "ROTEAMENTO_PROPOSTO",
+      "at": "2026-07-04T04:49:52.278025+00:00",
+      "reason": "Mudanças restritas à infraestrutura do Fluxo V2"
+    },
+    {
+      "from": "ROTEAMENTO_PROPOSTO",
+      "state": "APROVADO",
+      "at": "2026-07-04T04:49:52.332837+00:00",
+      "reason": "Escopo autorizado pelo pedido de implementação"
+    },
+    {
+      "from": "APROVADO",
+      "state": "PREPARADO",
+      "at": "2026-07-04T04:49:52.387310+00:00",
+      "reason": "Diff pronto para gates e revisão humana"
+    },
+    {
+      "from": "PREPARADO",
+      "state": "VALIDADO_ESTRUTURALMENTE",
+      "at": "2026-07-04T05:04:59.733645+00:00",
+      "reason": "Todos os gates estruturais aprovados"
+    },
+    {
+      "from": "VALIDADO_ESTRUTURALMENTE",
+      "state": "VALIDADO_SEMANTICAMENTE",
+      "at": "2026-07-04T05:04:59.788992+00:00",
+      "reason": "Diff aprovado pelo responsável humano"
+    },
+    {
+      "from": "VALIDADO_SEMANTICAMENTE",
+      "state": "PUBLICADO",
+      "at": "2026-07-04T05:04:59.841970+00:00",
+      "reason": "Publicação homologada e pronta para commit"
+    }
+  ]
+}

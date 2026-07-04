@@ -1,0 +1,79 @@
+{
+  "directory": "/home/davis/dev/kb",
+  "mode": "publish",
+  "run_id": "RUN-2026-07-04-FLUXOV2-HOMOLOG",
+  "result": "APROVADO",
+  "gates": [
+    {
+      "name": "PREFLIGHT",
+      "status": "PASS",
+      "findings": [],
+      "not_validated": []
+    },
+    {
+      "name": "SCHEMA",
+      "status": "PASS",
+      "findings": [],
+      "not_validated": []
+    },
+    {
+      "name": "DUPLICIDADE",
+      "status": "PASS",
+      "findings": [],
+      "not_validated": []
+    },
+    {
+      "name": "ROTEAMENTO",
+      "status": "PASS",
+      "findings": [],
+      "not_validated": []
+    },
+    {
+      "name": "LEDGER_KB",
+      "status": "PASS",
+      "findings": [],
+      "not_validated": []
+    },
+    {
+      "name": "SCORE_STATUS",
+      "status": "PASS",
+      "findings": [],
+      "not_validated": []
+    },
+    {
+      "name": "REFERENCIAS_INTERNAS",
+      "status": "PASS",
+      "findings": [],
+      "not_validated": []
+    },
+    {
+      "name": "PENDENCIAS",
+      "status": "PASS",
+      "findings": [],
+      "not_validated": []
+    },
+    {
+      "name": "ESCOPO_DIFF",
+      "status": "PASS",
+      "findings": [],
+      "not_validated": []
+    },
+    {
+      "name": "CAUSALIDADE",
+      "status": "PASS",
+      "findings": [],
+      "not_validated": []
+    },
+    {
+      "name": "REVISAO",
+      "status": "PASS",
+      "findings": [],
+      "not_validated": []
+    }
+  ],
+  "not_validated_by_automation": [
+    "verdade factual externa integral",
+    "fidelidade semântica integral",
+    "julgamento humano de conflitos"
+  ]
+}

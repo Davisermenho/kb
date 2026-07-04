@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "run_id": "RUN-2026-07-04-FLUXOV2-HOMOLOG",
+  "objetivo": "Homologar publicação, escopo e recuperação do Fluxo V2 após baseline aprovado",
+  "solicitante": "davis",
+  "criado_em": "2026-07-04T04:49:03.260703+00:00",
+  "risco": "alto",
+  "fontes_planejadas": [],
+  "arquivos_permitidos": [
+    ".kb/runs/RUN-2026-07-04-FLUXOV2-HOMOLOG/draft.md",
+    ".kb/runs/RUN-2026-07-04-FLUXOV2-HOMOLOG/manifest.json",
+    ".kb/runs/RUN-2026-07-04-FLUXOV2-HOMOLOG/review.json",
+    ".kb/runs/RUN-2026-07-04-FLUXOV2-HOMOLOG/state.json",
+    ".kb/runs/RUN-2026-07-04-FLUXOV2-HOMOLOG/validation.json",
+    ".domains/dominio_roteirizacao_motivacional_esportiva.md",
+    ".domains/prompt_domain.md",
+    "00_HISTORICO.md",
+    "01_ AUDITORIA_PROFUNDA_HISTORICO.md",
+    "02_AUDITORIA_FLUXO.md",
+    "LEDGER_KB_VERIFY.md",
+    "kb_validate.py",
+    "kb_workflow.py",
+    "soluções/FLUXOV2.md",
+    "soluções/AUDITORIA_MARKDOWN_FLUXOV2.md",
+    "soluções/RESULTADO_AUDIT.md",
+    "soluções/front.md",
+    "soluções/yaml.md",
+    "tests/test_kb_workflow.py"
+  ],
+  "operacoes_permitidas": [
+    "criar",
+    "editar",
+    "excluir"
+  ],
+  "operacoes_proibidas": [
+    "renomear",
+    "sincronizar"
+  ],
+  "estado_inicial_commit": "17419bc5c06c40297de828dd6994b425bb888d2b",
+  "alteracoes_preexistentes": [],
+  "snapshot_preexistente": {},
+  "causalidade": [],
+  "aprovacoes_exigidas": [
+    "humano"
+  ]
+}

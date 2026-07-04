@@ -78,6 +78,14 @@ def create_run(root: Path, run_id: str, objective: str, risk: str, files: list[s
         raise ValueError(f"operações inválidas: {sorted(invalid_operations)}")
     run_dir = root / ".kb" / "runs" / run_id
     run_dir.mkdir(parents=True, exist_ok=False)
+    run_prefix = f".kb/runs/{run_id}"
+    generated_files = {
+        f"{run_prefix}/manifest.json",
+        f"{run_prefix}/draft.md",
+        f"{run_prefix}/state.json",
+        f"{run_prefix}/validation.json",
+        f"{run_prefix}/review.json",
+    }
     manifest = {
         "schema_version": 1,
         "run_id": run_id,
@@ -86,7 +94,7 @@ def create_run(root: Path, run_id: str, objective: str, risk: str, files: list[s
         "criado_em": now(),
         "risco": risk,
         "fontes_planejadas": [],
-        "arquivos_permitidos": sorted(set(files)),
+        "arquivos_permitidos": sorted(set(files) | generated_files),
         "operacoes_permitidas": sorted(set(operations)),
         "operacoes_proibidas": sorted(VALID_OPERATIONS - set(operations)),
         "estado_inicial_commit": git_head(root),
