@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "run_id": "RUN-2026-07-06-MIGRACAO-VSCODE-AGENTES",
+  "phase": "4D-ci",
+  "validated_at": "2026-07-06T16:10:58-03:00",
+  "base_commit": "5ad9de21d5c9fd389f5ebfce7ab422c978c7c2bc",
+  "execution_environment": "local",
+  "result": "APROVADO_LOCALMENTE_CI_PENDENTE",
+  "validated_paths": [
+    ".github/workflows/kb-validation.yml"
+  ],
+  "commands": [
+    {
+      "command": "python3 ferramentas/kb_compile.py exemplos/domain_customer.md --schema schemas/domain_knowledge.schema.json --check-only",
+      "status": "PASS"
+    },
+    {
+      "command": "python3 ferramentas/check_kb_consistency.py .",
+      "status": "PASS",
+      "summary": "12 fontes e 11 KBs interpretadas; invariantes ledger↔KB verificadas."
+    },
+    {
+      "command": "python3 ferramentas/kb_validate.py .",
+      "status": "PASS",
+      "summary": "Auditoria local aprovada; aviso preexistente de causalidade legada preservado."
+    },
+    {
+      "command": "python3 -m unittest discover -s tests -v",
+      "status": "PASS",
+      "summary": "26 testes executados com sucesso."
+    }
+  ],
+  "acceptance_criteria": [
+    {
+      "criterion": "Workflow executa o mesmo comando canônico documentado no README e na task VS Code",
+      "status": "PASS"
+    },
+    {
+      "criterion": "schema, exemplos, checker e ledger não foram alterados",
+      "status": "PASS"
+    },
+    {
+      "criterion": "GitHub Actions conclui com sucesso no commit da integração",
+      "status": "PENDING"
+    }
+  ],
+  "ci_remote": {
+    "status": "PENDING",
+    "workflow": ".github/workflows/kb-validation.yml",
+    "run_id": null,
+    "url": null,
+    "finding": "Resultado remoto será preenchido somente após execução real no GitHub Actions."
+  },
+  "conclusion": "Integração de CI preparada e validada localmente; conclusão remota pendente."
+}

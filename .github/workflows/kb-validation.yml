@@ -17,6 +17,8 @@ jobs:
           python-version: "3.12"
       - name: Unit and integration tests
         run: python3 -m unittest discover -s tests -v
+      - name: Compile canonical example
+        run: python3 ferramentas/kb_compile.py exemplos/domain_customer.md --schema schemas/domain_knowledge.schema.json --check-only
       - name: Structural checker
         run: python3 ferramentas/check_kb_consistency.py .
       - name: Audit gates
