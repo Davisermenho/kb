@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "run_id": "RUN-2026-07-06-MIGRACAO-VSCODE-AGENTES",
+  "phase": "5-remote-validation",
+  "validated_at": "2026-07-06T20:08:26-03:00",
+  "validated_commit": "996a34458dbb92aaf2e0d8d1fdf3870ec2f6f3c1",
+  "execution_environment": "github_actions",
+  "workflow": {
+    "name": "KB validation",
+    "run_id": 28829448771,
+    "job_id": 85499898833,
+    "status": "completed",
+    "conclusion": "success",
+    "run_url": "https://github.com/Davisermenho/kb/actions/runs/28829448771",
+    "job_url": "https://github.com/Davisermenho/kb/actions/runs/28829448771/job/85499898833",
+    "created_at": "2026-07-06T23:08:01Z",
+    "updated_at": "2026-07-06T23:08:09Z"
+  },
+  "ci_remote": {
+    "status": "PASS",
+    "head_sha": "996a34458dbb92aaf2e0d8d1fdf3870ec2f6f3c1",
+    "steps_passed": [
+      "Unit and integration tests",
+      "Compile canonical example",
+      "Structural checker",
+      "Audit gates"
+    ]
+  },
+  "scope_confirmation": {
+    "phase_5_commit_files": [
+      ".kb/runs/RUN-2026-07-06-MIGRACAO-VSCODE-AGENTES/manifest.json",
+      ".kb/runs/RUN-2026-07-06-MIGRACAO-VSCODE-AGENTES/phase-5-inventory-validation.json",
+      "governanca/Inventario.md"
+    ],
+    "preserved_outside_phase_5_commit": [
+      ".gitignore",
+      "governanca/migration.md"
+    ]
+  },
+  "limitations": [
+    "Esta evidência confirma a execução remota do workflow para o commit validado; não representa revisão humana nem merge.",
+    "A verdade factual externa integral, a fidelidade semântica integral e o julgamento humano de conflitos permanecem fora do escopo da automação."
+  ],
+  "conclusion": "Fase 5 validada remotamente no GitHub Actions para o commit 996a34458dbb92aaf2e0d8d1fdf3870ec2f6f3c1."
+}
