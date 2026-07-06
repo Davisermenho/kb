@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "run_id": "RUN-2026-07-06-MIGRACAO-VSCODE-AGENTES",
+  "phase": "4B",
+  "validated_at": "2026-07-06T15:39:01-03:00",
+  "base_commit": "effd61053ae9a5a325900e9f552a920af3274451",
+  "execution_environment": "local",
+  "result": "APROVADO_LOCALMENTE",
+  "validated_paths": [
+    "schemas/domain_knowledge.schema.json",
+    "exemplos/domain_customer.md",
+    "exemplos/domain_customer.json",
+    "tests/test_domain_schema.py"
+  ],
+  "source_integrity": [
+    {
+      "source": "drive/domain_knowledge.schema.json",
+      "destination": "schemas/domain_knowledge.schema.json",
+      "sha256": "4682e19fc9349f84dadcb88cf1845eb04959498374200b1c47d9dacf38c228e4",
+      "identical": true
+    },
+    {
+      "source": "drive/domain_customer.md",
+      "destination": "exemplos/domain_customer.md",
+      "sha256": "c30a5c3fb47bb11868342b3acd1258e3fffcd1b313fc60c4dc9be3c3bde538e5",
+      "identical": true
+    },
+    {
+      "source": "drive/domain_customer.json",
+      "destination": "exemplos/domain_customer.json",
+      "sha256": "f7087d409da2e271c4811c0aef66bcd1fbd6d55f87deb980ae2aa5127ba4c23e",
+      "identical": true
+    }
+  ],
+  "commands": [
+    {
+      "command": "python3 -m unittest tests/test_domain_schema.py -v",
+      "status": "PASS",
+      "summary": "2 testes de contrato executados com sucesso."
+    },
+    {
+      "command": "python3 ferramentas/check_kb_consistency.py .",
+      "status": "PASS",
+      "summary": "12 fontes e 11 KBs interpretadas; invariantes ledger↔KB verificadas."
+    },
+    {
+      "command": "python3 ferramentas/kb_validate.py .",
+      "status": "PASS",
+      "summary": "Auditoria local aprovada; aviso preexistente de causalidade legada preservado."
+    },
+    {
+      "command": "python3 -m unittest discover -s tests -v",
+      "status": "PASS",
+      "summary": "21 testes executados com sucesso."
+    }
+  ],
+  "acceptance_criteria": [
+    {
+      "criterion": "kb_compile.py não foi executado nem incorporado",
+      "status": "PASS"
+    },
+    {
+      "criterion": "check_kb_consistency.py não foi alterado",
+      "status": "PASS"
+    },
+    {
+      "criterion": "FONTES_REGISTRADAS.md não foi alterado",
+      "status": "PASS"
+    },
+    {
+      "criterion": "domain_customer.json satisfaz domain_knowledge.schema.json",
+      "status": "PASS"
+    },
+    {
+      "criterion": "domain_customer.md corresponde ao JSON após combinar front matter e corpo Markdown",
+      "status": "PASS"
+    }
+  ],
+  "ci_remote": {
+    "status": "NOT_RUN",
+    "finding": "Nenhum resultado remoto é alegado por esta evidência local."
+  },
+  "conclusion": "Schema e exemplos mínimos incorporados e validados localmente; Fase 4B apta para revisão humana."
+}

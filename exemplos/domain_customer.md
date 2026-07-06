@@ -1,0 +1,34 @@
+---
+id: domain.customer
+title: Cliente
+type: domain_knowledge
+version: 1.0.0
+status: approved
+domain: Comercial
+boundedContext: CRM
+aliases: [Customer, Cliente comercial]
+tags: [cliente, crm, cadastro]
+relationships:
+  dependsOn:
+    - domain.person
+    - domain.address
+  relatedTo:
+    - process.customer_registration
+retrieval:
+  searchable: true
+  priority: high
+  canonical: true
+content:
+  summary: Representa uma pessoa física ou jurídica que mantém relacionamento comercial com a organização.
+  concepts: []
+  businessRules: []
+  examples: []
+---
+
+# Cliente
+
+Representa uma pessoa física ou jurídica que mantém relacionamento comercial com a organização.
+
+## Quando Usar
+
+Use esta entrada para padronizar regras, exemplos e relações do conceito de cliente no contexto de CRM.
