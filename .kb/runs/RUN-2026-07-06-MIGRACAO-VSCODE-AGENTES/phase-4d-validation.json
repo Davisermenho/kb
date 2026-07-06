@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "run_id": "RUN-2026-07-06-MIGRACAO-VSCODE-AGENTES",
+  "phase": "4D-local",
+  "validated_at": "2026-07-06T16:00:36-03:00",
+  "base_commit": "8a85ec4caafc36a02eb1b928aaa56505ed7bf6eb",
+  "execution_environment": "local",
+  "result": "APROVADO_LOCALMENTE",
+  "validated_paths": [
+    ".vscode/tasks.json",
+    "README.md"
+  ],
+  "commands": [
+    {
+      "command": "python3 -m json.tool .vscode/tasks.json",
+      "status": "PASS"
+    },
+    {
+      "command": "python3 ferramentas/kb_compile.py exemplos/domain_customer.md --schema schemas/domain_knowledge.schema.json --check-only",
+      "status": "PASS",
+      "summary": "Exemplo convertido e validado sem gravação de saída."
+    },
+    {
+      "command": "python3 ferramentas/check_kb_consistency.py .",
+      "status": "PASS",
+      "summary": "12 fontes e 11 KBs interpretadas; invariantes ledger↔KB verificadas."
+    },
+    {
+      "command": "python3 ferramentas/kb_validate.py .",
+      "status": "PASS",
+      "summary": "Auditoria local aprovada; aviso preexistente de causalidade legada preservado."
+    },
+    {
+      "command": "python3 -m unittest discover -s tests -v",
+      "status": "PASS",
+      "summary": "26 testes executados com sucesso."
+    }
+  ],
+  "acceptance_criteria": [
+    {
+      "criterion": "Task VS Code valida o exemplo por kb_compile.py em modo --check-only",
+      "status": "PASS"
+    },
+    {
+      "criterion": "README documenta o comando operacional do compilador",
+      "status": "PASS"
+    },
+    {
+      "criterion": "schema, exemplos, checker e ledger não foram alterados",
+      "status": "PASS"
+    },
+    {
+      "criterion": "workflow GitHub Actions não foi alterado nesta subfase",
+      "status": "PASS"
+    }
+  ],
+  "ci_remote": {
+    "status": "NOT_RUN",
+    "workflow_modified": false,
+    "finding": "A integração remota foi deliberadamente separada da Fase 4D-local."
+  },
+  "conclusion": "Compilador integrado ao fluxo local do VS Code e documentado; alteração de CI permanece pendente de autorização separada."
+}

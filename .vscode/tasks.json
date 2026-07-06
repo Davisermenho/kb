@@ -49,6 +49,22 @@
       "problemMatcher": []
     },
     {
+      "label": "KB: validar exemplo compilado",
+      "type": "process",
+      "command": "python3",
+      "args": [
+        "ferramentas/kb_compile.py",
+        "exemplos/domain_customer.md",
+        "--schema",
+        "schemas/domain_knowledge.schema.json",
+        "--check-only"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
       "label": "KB: publicar run",
       "type": "process",
       "command": "python3",
