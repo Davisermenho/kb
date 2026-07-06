@@ -3,9 +3,11 @@
   "run_id": "RUN-2026-07-06-MIGRACAO-VSCODE-AGENTES",
   "phase": "4D-ci",
   "validated_at": "2026-07-06T16:10:58-03:00",
+  "remote_validated_at": "2026-07-06T19:11:50Z",
   "base_commit": "5ad9de21d5c9fd389f5ebfce7ab422c978c7c2bc",
-  "execution_environment": "local",
-  "result": "APROVADO_LOCALMENTE_CI_PENDENTE",
+  "validated_commit": "17808b5fbf06c4153ed5acff85c69684a7a391af",
+  "execution_environment": "local_and_github_actions",
+  "result": "APROVADO_LOCALMENTE_E_CI_REMOTO",
   "validated_paths": [
     ".github/workflows/kb-validation.yml"
   ],
@@ -41,15 +43,26 @@
     },
     {
       "criterion": "GitHub Actions conclui com sucesso no commit da integração",
-      "status": "PENDING"
+      "status": "PASS"
     }
   ],
   "ci_remote": {
-    "status": "PENDING",
+    "status": "PASS",
     "workflow": ".github/workflows/kb-validation.yml",
-    "run_id": null,
-    "url": null,
-    "finding": "Resultado remoto será preenchido somente após execução real no GitHub Actions."
+    "run_id": 28816681270,
+    "job_id": 85457731311,
+    "url": "https://github.com/Davisermenho/kb/actions/runs/28816681270",
+    "head_sha": "17808b5fbf06c4153ed5acff85c69684a7a391af",
+    "conclusion": "success",
+    "steps_passed": [
+      "Unit and integration tests",
+      "Compile canonical example",
+      "Structural checker",
+      "Audit gates"
+    ],
+    "annotations": [
+      "GitHub Actions avisou que Node.js 20 está depreciado e que actions/checkout@v4 e actions/setup-python@v5 foram forçadas a executar em Node.js 24; o aviso não reprovou o job."
+    ]
   },
-  "conclusion": "Integração de CI preparada e validada localmente; conclusão remota pendente."
+  "conclusion": "Compilador integrado e aprovado localmente e no GitHub Actions para o commit validado."
 }
