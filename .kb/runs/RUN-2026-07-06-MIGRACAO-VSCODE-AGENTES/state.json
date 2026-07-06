@@ -1,0 +1,12 @@
+{
+  "run_id": "RUN-2026-07-06-MIGRACAO-VSCODE-AGENTES",
+  "state": "RASCUNHO",
+  "updated_at": "2026-07-06T14:05:08-03:00",
+  "history": [
+    {
+      "state": "RASCUNHO",
+      "at": "2026-07-06T14:05:08-03:00",
+      "reason": "Run criado para planejar a migração controlada do fluxo operacional da KB para VS Code com Claude Code e Codex."
+    }
+  ]
+}
