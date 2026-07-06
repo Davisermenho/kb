@@ -7,7 +7,8 @@ as ferramentas que validam o fluxo de publicação.
 
 1. Leia o [protocolo operacional](governanca/PROTOCOLO.md).
 2. Consulte a [arquitetura e matriz de roteamento](governanca/REGISTRO_FONTES.md).
-3. Preencha o [template de fonte](governanca/TEMPLATE.md) em um run de trabalho.
+3. Consulte o [inventário completo do repositório](governanca/Inventario.md).
+4. Preencha o [template de fonte](governanca/TEMPLATE.md) em um run de trabalho.
 
 ## Estrutura
 
