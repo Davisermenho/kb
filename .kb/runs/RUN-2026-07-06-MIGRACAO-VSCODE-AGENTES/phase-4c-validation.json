@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "run_id": "RUN-2026-07-06-MIGRACAO-VSCODE-AGENTES",
+  "phase": "4C",
+  "validated_at": "2026-07-06T15:53:44-03:00",
+  "base_commit": "9c42ffcd1c2ecbdbc22a745536e4d1cf24aec062",
+  "execution_environment": "local",
+  "result": "APROVADO_LOCALMENTE",
+  "validated_paths": [
+    "ferramentas/kb_compile.py",
+    "tests/test_kb_compile.py"
+  ],
+  "source_integrity": {
+    "source": "drive/kb_compile.py",
+    "destination": "ferramentas/kb_compile.py",
+    "sha256": "fefcb4d2fc92fc52cb881bce6c8a706e7fb41df080733a2ebe0aadfd08c3293a",
+    "identical": true
+  },
+  "commands": [
+    {
+      "command": "python3 -m py_compile ferramentas/kb_compile.py tests/test_kb_compile.py",
+      "status": "PASS"
+    },
+    {
+      "command": "python3 -m unittest tests/test_kb_compile.py -v",
+      "status": "PASS",
+      "summary": "5 testes específicos executados com sucesso."
+    },
+    {
+      "command": "python3 ferramentas/kb_compile.py exemplos/domain_customer.md --schema schemas/domain_knowledge.schema.json --check-only",
+      "status": "PASS"
+    },
+    {
+      "command": "python3 ferramentas/check_kb_consistency.py .",
+      "status": "PASS",
+      "summary": "12 fontes e 11 KBs interpretadas; invariantes ledger↔KB verificadas."
+    },
+    {
+      "command": "python3 ferramentas/kb_validate.py .",
+      "status": "PASS",
+      "summary": "Auditoria local aprovada; aviso preexistente de causalidade legada preservado."
+    },
+    {
+      "command": "python3 -m unittest discover -s tests -v",
+      "status": "PASS",
+      "summary": "26 testes executados com sucesso."
+    }
+  ],
+  "acceptance_criteria": [
+    {
+      "criterion": "kb_compile.py incorporado sem alterar checker, ledger, schema ou exemplos",
+      "status": "PASS"
+    },
+    {
+      "criterion": "--check-only valida o exemplo canônico",
+      "status": "PASS"
+    },
+    {
+      "criterion": "JSON gerado corresponde a exemplos/domain_customer.json",
+      "status": "PASS"
+    },
+    {
+      "criterion": "front matter ausente retorna erro operacional 2",
+      "status": "PASS"
+    },
+    {
+      "criterion": "schema JSON malformado retorna erro operacional 2",
+      "status": "PASS"
+    },
+    {
+      "criterion": "campo obrigatório ausente retorna falha de validação 1",
+      "status": "PASS"
+    }
+  ],
+  "ci_remote": {
+    "status": "NOT_RUN",
+    "finding": "Nenhum resultado remoto é alegado por esta evidência local."
+  },
+  "conclusion": "Compilador incorporado e validado localmente; Fase 4C apta para revisão humana."
+}
