@@ -1,0 +1,34 @@
+agents:
+  codex_vscode:
+    access: local_repo
+    allowed_roles:
+      - EXECUTOR_TECNICO
+      - REVISOR_TECNICO
+    forbidden:
+      - approve_own_diff
+
+  claude_code_vscode:
+    access: local_repo
+    allowed_roles:
+      - EXECUTOR_TECNICO
+      - REVISOR_TECNICO
+    forbidden:
+      - approve_own_diff
+
+  chatgpt_web_github_connector:
+    access: github_remote_connector
+    allowed_roles:
+      - ARQUITETO_DOCUMENTADOR
+      - AUDITOR_REMOTO
+      - EDITOR_REMOTO_CONTROLADO
+    forbidden:
+      - claim_local_tests_executed
+      - bypass_gates
+
+  gemini_pro_web:
+    access: external_browser_no_repo
+    allowed_roles:
+      - JUIZ_SEMANTICO
+    forbidden:
+      - modify_repo
+      - claim_tests_executed

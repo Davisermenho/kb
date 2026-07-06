@@ -36,6 +36,20 @@ Legenda: **Concluído** = requisito implementado e com evidência reproduzível;
 
 Os comandos acima verificam somente o que está declarado em cada linha. Um run aprovado não é evidência automática de expiração de lock, sincronização, recuperação, todos os cenários adversariais ou verdade factual externa.
 
+### 0.3 Próxima ação recomendada
+
+**Migrar as quatro alegações de causalidade legada em um `RUN_ID` próprio, de risco alto.** Esta é a próxima ação porque é a única pendência que o validador atual sinaliza diretamente (`CAUSALITY-LEGACY-REVIEW`) e porque mantém a Fase 4 incompleta.
+
+Escopo recomendado: `.kb/LEGACY_CAUSALITY_REVIEW.md`, `conteudo/FONTES_REGISTRADAS.md` e `conteudo/projetos/KB-PROJ-05_Arquitetura_da_Base_de_Conhecimento.md`. Para cada ocorrência:
+
+1. procurar decisão anterior, commit e diff que demonstrem motivação;
+2. usar `mudanca_comprovadamente_motivada` somente quando o conjunto de evidências estiver completo;
+3. na ausência dessa prova, reclassificar como `reforco_retrospectivo`, `recomendacao_nao_implementada` ou `sem_relacao_comprovada`;
+4. buscar cópias e derivações no repositório e registrar a propagação;
+5. submeter o diff final a revisão humana, executar todos os gates em modo publish e atualizar o inventário sem apagar seu histórico.
+
+Critério de conclusão verificável: os quatro itens ficam com decisão e evidência registradas, os testes continuam aprovados e `python3 ferramentas/kb_validate.py .` deixa de emitir `CAUSALITY-LEGACY-REVIEW`. Resolver apenas a primeira linha detectada pelo gate não encerra a migração das demais ocorrências inventariadas.
+
 ## 1. Finalidade
 
 Este documento especifica todas as ações necessárias para transformar o fluxo atual de registro de fontes em um processo versionado, verificável, orientado por risco e resistente aos principais erros observados no uso de agentes de IA.
