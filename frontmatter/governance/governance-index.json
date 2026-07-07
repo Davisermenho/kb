@@ -1,0 +1,24 @@
+{
+  "package": "governance-decision-pack",
+  "version": "1.0",
+  "created_at": "2026-07-07T08:37:26Z",
+  "recommended_location": {
+    "decision_register": "governance/decision-register.md",
+    "governance_document": "governance/metadata-governance.md",
+    "decision_template": "governance/decision-template.md"
+  },
+  "documents": [
+    {
+      "path": "decision-register.md",
+      "purpose": "Registro de decisões que explica os motivos do padrão e documenta alternativas, consequências e decisões aceitas."
+    },
+    {
+      "path": "metadata-governance.md",
+      "purpose": "Documento de governança que define papéis, processo de mudança, validação, IA, ledger, versionamento e exceções."
+    },
+    {
+      "path": "decision-template.md",
+      "purpose": "Template para registrar novas decisões de governança."
+    }
+  ]
+}

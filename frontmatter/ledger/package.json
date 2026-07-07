@@ -1,0 +1,13 @@
+{
+  "name": "frontmatter-ledger",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "append": "node append-ledger-event.mjs",
+    "validate": "node validate-ledger.mjs"
+  },
+  "devDependencies": {
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1"
+  }
+}

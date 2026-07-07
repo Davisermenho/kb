@@ -1,0 +1,387 @@
+{
+  "generated_at": "2026-07-07T17:10:22.775Z",
+  "total": 19,
+  "passed": 19,
+  "failed": 0,
+  "results": [
+    {
+      "id": "plan-review",
+      "path": "tests/fixtures/valid/plan-review.md",
+      "expected_valid": true,
+      "expected_error_codes": [],
+      "actual_valid": true,
+      "actual_error_codes": [],
+      "errors": [],
+      "artifact_hash": "29f54b107e9d368358b893f021a556535fd7075b73ce77123e1a74b230b7ab6c",
+      "passed": true
+    },
+    {
+      "id": "policy-approved",
+      "path": "tests/fixtures/valid/policy-approved.md",
+      "expected_valid": true,
+      "expected_error_codes": [],
+      "actual_valid": true,
+      "actual_error_codes": [],
+      "errors": [],
+      "artifact_hash": "34bbbb1a27e63596e20e88e6551b6fe197e88ea14797523737c518f9c6d9e549",
+      "passed": true
+    },
+    {
+      "id": "runbook-draft",
+      "path": "tests/fixtures/valid/runbook-draft.md",
+      "expected_valid": true,
+      "expected_error_codes": [],
+      "actual_valid": true,
+      "actual_error_codes": [],
+      "errors": [],
+      "artifact_hash": "92305fdc32e0ed958d969704d797286ae02bc1cc2338415b4121775a20bdf59f",
+      "passed": true
+    },
+    {
+      "id": "tutorial-approved",
+      "path": "tests/fixtures/valid/tutorial-approved.md",
+      "expected_valid": true,
+      "expected_error_codes": [],
+      "actual_valid": true,
+      "actual_error_codes": [],
+      "errors": [],
+      "artifact_hash": "3aca438499267f63c9c71b95e9fcbbbd8a6f869a393b93017c148bbd84f01fde",
+      "passed": true
+    },
+    {
+      "id": "approved-without-evidence",
+      "path": "tests/fixtures/invalid/approved-without-evidence.md",
+      "expected_valid": false,
+      "expected_error_codes": [
+        "SCHEMA_REQUIRED"
+      ],
+      "actual_valid": false,
+      "actual_error_codes": [
+        "SCHEMA_REQUIRED",
+        "SCHEMA_REQUIRED",
+        "SCHEMA_REQUIRED",
+        "SCHEMA_IF"
+      ],
+      "errors": [
+        {
+          "code": "SCHEMA_REQUIRED",
+          "message": "/ must have required property 'approved_by'"
+        },
+        {
+          "code": "SCHEMA_REQUIRED",
+          "message": "/ must have required property 'approved_at'"
+        },
+        {
+          "code": "SCHEMA_REQUIRED",
+          "message": "/ must have required property 'approval_ref'"
+        },
+        {
+          "code": "SCHEMA_IF",
+          "message": "/ must match \"then\" schema"
+        }
+      ],
+      "artifact_hash": null,
+      "passed": true
+    },
+    {
+      "id": "bad-date-format",
+      "path": "tests/fixtures/invalid/bad-date-format.md",
+      "expected_valid": false,
+      "expected_error_codes": [
+        "SCHEMA_FORMAT"
+      ],
+      "actual_valid": false,
+      "actual_error_codes": [
+        "SCHEMA_FORMAT"
+      ],
+      "errors": [
+        {
+          "code": "SCHEMA_FORMAT",
+          "message": "/created_at must match format \"date\""
+        }
+      ],
+      "artifact_hash": null,
+      "passed": true
+    },
+    {
+      "id": "dangling-relationship",
+      "path": "tests/fixtures/invalid/dangling-relationship.md",
+      "expected_valid": false,
+      "expected_error_codes": [
+        "DANGLING_RELATIONSHIP"
+      ],
+      "actual_valid": false,
+      "actual_error_codes": [
+        "DANGLING_RELATIONSHIP"
+      ],
+      "errors": [
+        {
+          "code": "DANGLING_RELATIONSHIP",
+          "message": "Relação aponta para ID inexistente: doc_does_not_exist"
+        }
+      ],
+      "artifact_hash": null,
+      "passed": true
+    },
+    {
+      "id": "duplicate-id-a",
+      "path": "tests/fixtures/invalid/duplicate-id-a.md",
+      "expected_valid": false,
+      "expected_error_codes": [
+        "DUPLICATE_ID"
+      ],
+      "actual_valid": false,
+      "actual_error_codes": [
+        "DUPLICATE_ID"
+      ],
+      "errors": [
+        {
+          "code": "DUPLICATE_ID",
+          "message": "ID duplicado: doc_duplicate_id"
+        }
+      ],
+      "artifact_hash": null,
+      "passed": true
+    },
+    {
+      "id": "duplicate-id-b",
+      "path": "tests/fixtures/invalid/duplicate-id-b.md",
+      "expected_valid": false,
+      "expected_error_codes": [
+        "DUPLICATE_ID"
+      ],
+      "actual_valid": false,
+      "actual_error_codes": [
+        "DUPLICATE_ID"
+      ],
+      "errors": [
+        {
+          "code": "DUPLICATE_ID",
+          "message": "ID duplicado: doc_duplicate_id"
+        }
+      ],
+      "artifact_hash": "ee95a24558fed7d0d182b0957b1173051eb0c5d4073d7c612cca6b83b965081c",
+      "passed": true
+    },
+    {
+      "id": "duplicate-yaml-key",
+      "path": "tests/fixtures/invalid/duplicate-yaml-key.md",
+      "expected_valid": false,
+      "expected_error_codes": [
+        "YAML_DUPLICATE_KEY"
+      ],
+      "actual_valid": false,
+      "actual_error_codes": [
+        "YAML_DUPLICATE_KEY"
+      ],
+      "errors": [
+        {
+          "code": "YAML_DUPLICATE_KEY",
+          "message": "Map keys must be unique at line 2, column 1:\n\nid: \"doc_duplicate_key\"\nid: \"doc_duplicate_key_2\"\n^\n"
+        }
+      ],
+      "artifact_hash": null,
+      "passed": true
+    },
+    {
+      "id": "invalid-status",
+      "path": "tests/fixtures/invalid/invalid-status.md",
+      "expected_valid": false,
+      "expected_error_codes": [
+        "SCHEMA_ENUM"
+      ],
+      "actual_valid": false,
+      "actual_error_codes": [
+        "SCHEMA_ENUM"
+      ],
+      "errors": [
+        {
+          "code": "SCHEMA_ENUM",
+          "message": "/status must be equal to one of the allowed values"
+        }
+      ],
+      "artifact_hash": null,
+      "passed": true
+    },
+    {
+      "id": "invalid-yaml",
+      "path": "tests/fixtures/invalid/invalid-yaml.md",
+      "expected_valid": false,
+      "expected_error_codes": [
+        "YAML_INVALID"
+      ],
+      "actual_valid": false,
+      "actual_error_codes": [
+        "YAML_INVALID"
+      ],
+      "errors": [
+        {
+          "code": "YAML_INVALID",
+          "message": "All sequence items must start at the same column at line 14, column 5:\n\n  - \"security\"\n    - \"nested_wrong\"\n    ^\n"
+        }
+      ],
+      "artifact_hash": null,
+      "passed": true
+    },
+    {
+      "id": "invented-field",
+      "path": "tests/fixtures/invalid/invented-field.md",
+      "expected_valid": false,
+      "expected_error_codes": [
+        "SCHEMA_ADDITIONAL_PROPERTY"
+      ],
+      "actual_valid": false,
+      "actual_error_codes": [
+        "SCHEMA_ADDITIONAL_PROPERTY"
+      ],
+      "errors": [
+        {
+          "code": "SCHEMA_ADDITIONAL_PROPERTY",
+          "message": "/ must NOT have additional properties"
+        }
+      ],
+      "artifact_hash": null,
+      "passed": true
+    },
+    {
+      "id": "missing-required-title",
+      "path": "tests/fixtures/invalid/missing-required-title.md",
+      "expected_valid": false,
+      "expected_error_codes": [
+        "SCHEMA_REQUIRED"
+      ],
+      "actual_valid": false,
+      "actual_error_codes": [
+        "SCHEMA_REQUIRED"
+      ],
+      "errors": [
+        {
+          "code": "SCHEMA_REQUIRED",
+          "message": "/ must have required property 'title'"
+        }
+      ],
+      "artifact_hash": null,
+      "passed": true
+    },
+    {
+      "id": "no-frontmatter",
+      "path": "tests/fixtures/invalid/no-frontmatter.md",
+      "expected_valid": false,
+      "expected_error_codes": [
+        "NO_FRONTMATTER"
+      ],
+      "actual_valid": false,
+      "actual_error_codes": [
+        "NO_FRONTMATTER"
+      ],
+      "errors": [
+        {
+          "code": "NO_FRONTMATTER",
+          "message": "Documento sem YAML front matter no topo."
+        }
+      ],
+      "artifact_hash": null,
+      "passed": true
+    },
+    {
+      "id": "policy-missing-risk-level",
+      "path": "tests/fixtures/invalid/policy-missing-risk-level.md",
+      "expected_valid": false,
+      "expected_error_codes": [
+        "SCHEMA_REQUIRED"
+      ],
+      "actual_valid": false,
+      "actual_error_codes": [
+        "SCHEMA_REQUIRED",
+        "SCHEMA_IF"
+      ],
+      "errors": [
+        {
+          "code": "SCHEMA_REQUIRED",
+          "message": "/ must have required property 'risk_level'"
+        },
+        {
+          "code": "SCHEMA_IF",
+          "message": "/ must match \"then\" schema"
+        }
+      ],
+      "artifact_hash": null,
+      "passed": true
+    },
+    {
+      "id": "published-without-evidence",
+      "path": "tests/fixtures/invalid/published-without-evidence.md",
+      "expected_valid": false,
+      "expected_error_codes": [
+        "SCHEMA_REQUIRED"
+      ],
+      "actual_valid": false,
+      "actual_error_codes": [
+        "SCHEMA_REQUIRED",
+        "SCHEMA_REQUIRED",
+        "SCHEMA_REQUIRED",
+        "SCHEMA_IF"
+      ],
+      "errors": [
+        {
+          "code": "SCHEMA_REQUIRED",
+          "message": "/ must have required property 'approved_by'"
+        },
+        {
+          "code": "SCHEMA_REQUIRED",
+          "message": "/ must have required property 'approved_at'"
+        },
+        {
+          "code": "SCHEMA_REQUIRED",
+          "message": "/ must have required property 'approval_ref'"
+        },
+        {
+          "code": "SCHEMA_IF",
+          "message": "/ must match \"then\" schema"
+        }
+      ],
+      "artifact_hash": null,
+      "passed": true
+    },
+    {
+      "id": "unfilled-placeholder",
+      "path": "tests/fixtures/invalid/unfilled-placeholder.md",
+      "expected_valid": false,
+      "expected_error_codes": [
+        "UNFILLED_PLACEHOLDER"
+      ],
+      "actual_valid": false,
+      "actual_error_codes": [
+        "UNFILLED_PLACEHOLDER"
+      ],
+      "errors": [
+        {
+          "code": "UNFILLED_PLACEHOLDER",
+          "message": "Documento contém placeholder não preenchido."
+        }
+      ],
+      "artifact_hash": null,
+      "passed": true
+    },
+    {
+      "id": "unknown-type",
+      "path": "tests/fixtures/invalid/unknown-type.md",
+      "expected_valid": false,
+      "expected_error_codes": [
+        "SCHEMA_ENUM"
+      ],
+      "actual_valid": false,
+      "actual_error_codes": [
+        "SCHEMA_ENUM"
+      ],
+      "errors": [
+        {
+          "code": "SCHEMA_ENUM",
+          "message": "/type must be equal to one of the allowed values"
+        }
+      ],
+      "artifact_hash": null,
+      "passed": true
+    }
+  ]
+}

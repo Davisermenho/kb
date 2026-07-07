@@ -1,0 +1,139 @@
+{
+  "version": "1.0",
+  "created_at": "2026-07-07T09:22:34Z",
+  "purpose": "Indexar templates preenchíveis por tipo documental.",
+  "templates": [
+    {
+      "document_type": "tutorial",
+      "path": "templates/tutorial.md",
+      "example_path": "examples/filled/tutorial.example.md",
+      "required_metadata": [
+        "id",
+        "schema_version",
+        "version",
+        "title",
+        "description",
+        "type",
+        "status",
+        "owner_team",
+        "created_at",
+        "updated_at"
+      ],
+      "recommended_sections": [
+        "Objetivo",
+        "Pré-requisitos",
+        "Passos",
+        "Verificação",
+        "Solução de problemas"
+      ]
+    },
+    {
+      "document_type": "api_reference",
+      "path": "templates/api-reference.md",
+      "example_path": "examples/filled/api-reference.example.md",
+      "required_metadata": [
+        "id",
+        "schema_version",
+        "version",
+        "title",
+        "description",
+        "type",
+        "status",
+        "owner_team",
+        "created_at",
+        "updated_at"
+      ],
+      "recommended_sections": [
+        "Visão geral",
+        "Endpoint",
+        "Autenticação",
+        "Parâmetros",
+        "Resposta",
+        "Erros",
+        "Exemplo"
+      ]
+    },
+    {
+      "document_type": "release_note",
+      "path": "templates/release-note.md",
+      "example_path": "examples/filled/release-note.example.md",
+      "required_metadata": [
+        "id",
+        "schema_version",
+        "version",
+        "title",
+        "description",
+        "type",
+        "status",
+        "owner_team",
+        "created_at",
+        "updated_at",
+        "published_at",
+        "release_version"
+      ],
+      "recommended_sections": [
+        "Resumo",
+        "Adicionado",
+        "Alterado",
+        "Corrigido",
+        "Removido",
+        "Migração"
+      ]
+    },
+    {
+      "document_type": "policy",
+      "path": "templates/policy.md",
+      "example_path": "examples/filled/policy.example.md",
+      "required_metadata": [
+        "id",
+        "schema_version",
+        "version",
+        "title",
+        "description",
+        "type",
+        "status",
+        "owner_team",
+        "created_at",
+        "updated_at",
+        "effective_date",
+        "next_review_at",
+        "risk_level"
+      ],
+      "recommended_sections": [
+        "Propósito",
+        "Escopo",
+        "Política",
+        "Responsabilidades",
+        "Exceções",
+        "Conformidade",
+        "Revisão"
+      ]
+    },
+    {
+      "document_type": "runbook",
+      "path": "templates/runbook.md",
+      "example_path": "examples/filled/runbook.example.md",
+      "required_metadata": [
+        "id",
+        "schema_version",
+        "version",
+        "title",
+        "description",
+        "type",
+        "status",
+        "owner_team",
+        "created_at",
+        "updated_at",
+        "risk_level"
+      ],
+      "recommended_sections": [
+        "Quando usar",
+        "Sinais e sintomas",
+        "Pré-requisitos",
+        "Procedimento",
+        "Escalonamento",
+        "Pós-incidente"
+      ]
+    }
+  ]
+}

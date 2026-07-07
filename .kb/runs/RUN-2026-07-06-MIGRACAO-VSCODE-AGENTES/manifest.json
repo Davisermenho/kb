@@ -43,7 +43,9 @@
     "tests/test_domain_schema.py",
     "tests/test_fontes_registradas.py",
     "tests/test_kb_compile.py",
-    "tests/test_no_legacy_paths.py"
+    "tests/test_no_legacy_paths.py",
+    "planos/Frontmatter.md",
+    "frontmatter/"
   ],
   "arquivos_proibidos": [
     "governanca/migration.md",
@@ -68,7 +70,8 @@
   "comandos_obrigatorios_validacao": [
     "python3 ferramentas/check_kb_consistency.py .",
     "python3 ferramentas/kb_validate.py .",
-    "python3 -m unittest discover -s tests -v"
+    "python3 -m unittest discover -s tests -v",
+    "npm --prefix frontmatter/tests test"
   ],
   "criterios_rollback": [
     "qualquer comando obrigatório de validação falhar",

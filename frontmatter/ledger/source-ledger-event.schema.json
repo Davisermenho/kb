@@ -1,0 +1,229 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/schemas/source-ledger-event.schema.json",
+  "title": "Source Decision Destination Ledger Event",
+  "description": "Registro append-only de origem, decisão e destino para rastreabilidade de documentos processados.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "ledger_version",
+    "event_id",
+    "event_type",
+    "occurred_at",
+    "actor",
+    "source",
+    "decision",
+    "destination",
+    "provenance"
+  ],
+  "properties": {
+    "ledger_version": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "event_id": {
+      "type": "string",
+      "pattern": "^evt_[a-f0-9]{16}$"
+    },
+    "event_type": {
+      "type": "string",
+      "enum": [
+        "document_ingested",
+        "metadata_validated",
+        "document_rejected",
+        "artifact_generated",
+        "artifact_published",
+        "ai_output_validated"
+      ]
+    },
+    "occurred_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "actor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "human",
+            "agent",
+            "system",
+            "ci"
+          ]
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "run_id": {
+          "type": "string",
+          "maxLength": 120
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "format",
+        "checksum_sha256"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "format": {
+          "type": "string",
+          "enum": [
+            "markdown_frontmatter",
+            "json_artifact",
+            "ai_output"
+          ]
+        },
+        "checksum_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "git_commit": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{7,40}$"
+        },
+        "schema_id": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "rule_set",
+        "reason"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "accepted",
+            "rejected",
+            "warning"
+          ]
+        },
+        "rule_set": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+        },
+        "validation_errors": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "path",
+              "message"
+            ],
+            "properties": {
+              "path": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "destination": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "none",
+            "artifact",
+            "index",
+            "published_page",
+            "rejection_report"
+          ]
+        },
+        "path": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "checksum_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pipeline",
+        "pipeline_version",
+        "parser_version"
+      ],
+      "properties": {
+        "pipeline": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "pipeline_version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        },
+        "parser_version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        },
+        "canonicalization": {
+          "type": "string",
+          "enum": [
+            "RFC8785-JCS",
+            "none"
+          ]
+        },
+        "previous_event_hash": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "event_hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    }
+  }
+}

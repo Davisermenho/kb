@@ -1,0 +1,6 @@
+{
+  "total": 19,
+  "expected_passed": 19,
+  "expected_failed": 0,
+  "note": "Gerado a partir de uma execução real de `npm --prefix frontmatter/tests test` (node scripts/run-conformance-tests.mjs), não escrito à mão. Confira `tests/reports/conformance-report.json` para o relatório completo com timestamp da última execução."
+}

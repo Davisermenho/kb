@@ -1,0 +1,7 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/schemas/domain-knowledge.schema.json",
+  "$comment": "DESCONTINUADO. Este arquivo tinha um nome quase idêntico ao schema real de produção schemas/domain_knowledge.schema.json (raiz do repo), mas validava um contrato totalmente diferente e incompatível (tutorial/api_reference/policy/runbook/... em vez de domain_knowledge). O conteúdo foi movido para frontmatter/tests/schemas/governed-docs.schema.json, com o nome corrigido. Este arquivo não pôde ser renomeado nem excluído porque o manifesto do run ativo proíbe as operações 'renomear' e 'excluir'; ele é mantido apenas como aviso. Não usar para validação — nenhum script do repositório deve referenciar este arquivo.",
+  "title": "DESCONTINUADO — ver frontmatter/tests/schemas/governed-docs.schema.json",
+  "type": "object"
+}

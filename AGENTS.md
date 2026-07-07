@@ -37,6 +37,7 @@ Antes de criar, editar, mover, renomear ou excluir qualquer arquivo:
    python3 ferramentas/check_kb_consistency.py .
    python3 ferramentas/kb_validate.py .
    python3 -m unittest discover -s tests -v
+   npm --prefix frontmatter/tests test
    ```
 
 6. Se qualquer validação obrigatória falhar, não publique e registre o bloqueio.

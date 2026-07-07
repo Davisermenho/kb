@@ -1,0 +1,226 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/schemas/structural-change-event.schema.json",
+  "title": "Structural Change Event",
+  "description": "Contrato para registrar mudanças estruturais no padrão de metadados documentais.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "change_id",
+    "change_type",
+    "status",
+    "version_after",
+    "date",
+    "author",
+    "decision_refs",
+    "affected_components",
+    "summary",
+    "breaking",
+    "requires_migration",
+    "compatibility_notes",
+    "checks_required",
+    "approval"
+  ],
+  "properties": {
+    "change_id": {
+      "type": "string",
+      "pattern": "^SC-[0-9]{4}-[0-9]{2}-[0-9]{2}-[0-9]{3}$"
+    },
+    "change_type": {
+      "type": "string",
+      "enum": [
+        "initial_release",
+        "field_added",
+        "field_removed",
+        "field_renamed",
+        "field_deprecated",
+        "field_type_changed",
+        "enum_value_added",
+        "enum_value_removed",
+        "requiredness_changed",
+        "validation_rule_changed",
+        "artifact_shape_changed",
+        "ledger_shape_changed",
+        "governance_rule_changed",
+        "script_behavior_changed"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "proposed",
+        "accepted",
+        "rejected",
+        "superseded"
+      ]
+    },
+    "version_before": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "version_after": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "author": {
+      "type": "string",
+      "minLength": 1
+    },
+    "decision_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^DR-[0-9]{3}$"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "affected_components": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 1000
+    },
+    "field_changes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "field",
+          "operation"
+        ],
+        "properties": {
+          "field": {
+            "type": "string"
+          },
+          "operation": {
+            "type": "string",
+            "enum": [
+              "added",
+              "removed",
+              "renamed",
+              "deprecated",
+              "type_changed",
+              "requiredness_changed",
+              "enum_changed"
+            ]
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "allowed_values": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "applies_to": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "from": {
+            "type": "string"
+          },
+          "to": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "breaking": {
+      "type": "boolean"
+    },
+    "requires_migration": {
+      "type": "boolean"
+    },
+    "migration_plan": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "compatibility_notes": {
+      "type": "string",
+      "minLength": 1
+    },
+    "checks_required": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "schema-validation",
+          "frontmatter-validation",
+          "artifact-validation",
+          "ledger-validation",
+          "ci-validation",
+          "changelog-entry",
+          "decision-register-entry",
+          "migration-plan",
+          "backward-compatibility-check",
+          "ai-output-contract-check"
+        ]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "approval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "approved_by",
+        "approved_at"
+      ],
+      "properties": {
+        "approved_by": {
+          "type": "string",
+          "minLength": 1
+        },
+        "approved_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "breaking": {
+            "const": true
+          }
+        },
+        "required": [
+          "breaking"
+        ]
+      },
+      "then": {
+        "properties": {
+          "requires_migration": {
+            "const": true
+          }
+        },
+        "required": [
+          "migration_plan"
+        ]
+      }
+    }
+  ]
+}

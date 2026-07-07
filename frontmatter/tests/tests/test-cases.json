@@ -1,0 +1,168 @@
+{
+  "version": "1.0",
+  "cases": [
+    {
+      "id": "plan-review",
+      "path": "tests/fixtures/valid/plan-review.md",
+      "expected_valid": true,
+      "expected_error_codes": [],
+      "purpose": "Caso válido deve gerar artefato canônico validado."
+    },
+    {
+      "id": "policy-approved",
+      "path": "tests/fixtures/valid/policy-approved.md",
+      "expected_valid": true,
+      "expected_error_codes": [],
+      "purpose": "Caso válido deve gerar artefato canônico validado."
+    },
+    {
+      "id": "runbook-draft",
+      "path": "tests/fixtures/valid/runbook-draft.md",
+      "expected_valid": true,
+      "expected_error_codes": [],
+      "purpose": "Caso válido deve gerar artefato canônico validado."
+    },
+    {
+      "id": "tutorial-approved",
+      "path": "tests/fixtures/valid/tutorial-approved.md",
+      "expected_valid": true,
+      "expected_error_codes": [],
+      "purpose": "Caso válido deve gerar artefato canônico validado."
+    },
+    {
+      "id": "approved-without-evidence",
+      "path": "tests/fixtures/invalid/approved-without-evidence.md",
+      "expected_valid": false,
+      "expected_error_codes": [
+        "SCHEMA_REQUIRED"
+      ],
+      "purpose": "Caso inválido deve ser rejeitado pelo parser, schema ou regra de negócio."
+    },
+    {
+      "id": "bad-date-format",
+      "path": "tests/fixtures/invalid/bad-date-format.md",
+      "expected_valid": false,
+      "expected_error_codes": [
+        "SCHEMA_FORMAT"
+      ],
+      "purpose": "Caso inválido deve ser rejeitado pelo parser, schema ou regra de negócio."
+    },
+    {
+      "id": "dangling-relationship",
+      "path": "tests/fixtures/invalid/dangling-relationship.md",
+      "expected_valid": false,
+      "expected_error_codes": [
+        "DANGLING_RELATIONSHIP"
+      ],
+      "purpose": "Caso inválido deve ser rejeitado pelo parser, schema ou regra de negócio."
+    },
+    {
+      "id": "duplicate-id-a",
+      "path": "tests/fixtures/invalid/duplicate-id-a.md",
+      "expected_valid": false,
+      "expected_error_codes": [
+        "DUPLICATE_ID"
+      ],
+      "purpose": "Caso inválido deve ser rejeitado pelo parser, schema ou regra de negócio."
+    },
+    {
+      "id": "duplicate-id-b",
+      "path": "tests/fixtures/invalid/duplicate-id-b.md",
+      "expected_valid": false,
+      "expected_error_codes": [
+        "DUPLICATE_ID"
+      ],
+      "purpose": "Caso inválido deve ser rejeitado pelo parser, schema ou regra de negócio."
+    },
+    {
+      "id": "duplicate-yaml-key",
+      "path": "tests/fixtures/invalid/duplicate-yaml-key.md",
+      "expected_valid": false,
+      "expected_error_codes": [
+        "YAML_DUPLICATE_KEY"
+      ],
+      "purpose": "Caso inválido deve ser rejeitado pelo parser, schema ou regra de negócio."
+    },
+    {
+      "id": "invalid-status",
+      "path": "tests/fixtures/invalid/invalid-status.md",
+      "expected_valid": false,
+      "expected_error_codes": [
+        "SCHEMA_ENUM"
+      ],
+      "purpose": "Caso inválido deve ser rejeitado pelo parser, schema ou regra de negócio."
+    },
+    {
+      "id": "invalid-yaml",
+      "path": "tests/fixtures/invalid/invalid-yaml.md",
+      "expected_valid": false,
+      "expected_error_codes": [
+        "YAML_INVALID"
+      ],
+      "purpose": "Caso inválido deve ser rejeitado pelo parser, schema ou regra de negócio."
+    },
+    {
+      "id": "invented-field",
+      "path": "tests/fixtures/invalid/invented-field.md",
+      "expected_valid": false,
+      "expected_error_codes": [
+        "SCHEMA_ADDITIONAL_PROPERTY"
+      ],
+      "purpose": "Caso inválido deve ser rejeitado pelo parser, schema ou regra de negócio."
+    },
+    {
+      "id": "missing-required-title",
+      "path": "tests/fixtures/invalid/missing-required-title.md",
+      "expected_valid": false,
+      "expected_error_codes": [
+        "SCHEMA_REQUIRED"
+      ],
+      "purpose": "Caso inválido deve ser rejeitado pelo parser, schema ou regra de negócio."
+    },
+    {
+      "id": "no-frontmatter",
+      "path": "tests/fixtures/invalid/no-frontmatter.md",
+      "expected_valid": false,
+      "expected_error_codes": [
+        "NO_FRONTMATTER"
+      ],
+      "purpose": "Caso inválido deve ser rejeitado pelo parser, schema ou regra de negócio."
+    },
+    {
+      "id": "policy-missing-risk-level",
+      "path": "tests/fixtures/invalid/policy-missing-risk-level.md",
+      "expected_valid": false,
+      "expected_error_codes": [
+        "SCHEMA_REQUIRED"
+      ],
+      "purpose": "Caso inválido deve ser rejeitado pelo parser, schema ou regra de negócio."
+    },
+    {
+      "id": "published-without-evidence",
+      "path": "tests/fixtures/invalid/published-without-evidence.md",
+      "expected_valid": false,
+      "expected_error_codes": [
+        "SCHEMA_REQUIRED"
+      ],
+      "purpose": "Caso inválido deve ser rejeitado pelo parser, schema ou regra de negócio."
+    },
+    {
+      "id": "unfilled-placeholder",
+      "path": "tests/fixtures/invalid/unfilled-placeholder.md",
+      "expected_valid": false,
+      "expected_error_codes": [
+        "UNFILLED_PLACEHOLDER"
+      ],
+      "purpose": "Caso inválido deve ser rejeitado pelo parser, schema ou regra de negócio."
+    },
+    {
+      "id": "unknown-type",
+      "path": "tests/fixtures/invalid/unknown-type.md",
+      "expected_valid": false,
+      "expected_error_codes": [
+        "SCHEMA_ENUM"
+      ],
+      "purpose": "Caso inválido deve ser rejeitado pelo parser, schema ou regra de negócio."
+    }
+  ]
+}
