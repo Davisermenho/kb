@@ -1,0 +1,10 @@
+{
+  "recommendations": [
+    "anthropic.claude-code",
+    "openai.chatgpt",
+    "ms-python.python",
+    "redhat.vscode-yaml",
+    "yzhang.markdown-all-in-one",
+    "remcohaszing.schemastore"
+  ]
+}

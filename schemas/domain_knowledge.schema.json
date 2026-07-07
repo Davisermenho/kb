@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schemas/domain-knowledge.schema.json",
+  "title": "Domain Knowledge Entry",
+  "type": "object",
+  "required": [
+    "id",
+    "title",
+    "type",
+    "version",
+    "status",
+    "domain",
+    "boundedContext",
+    "aliases",
+    "tags",
+    "relationships",
+    "retrieval",
+    "content"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z]+\\.[a-z0-9_-]+$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "type": {
+      "type": "string",
+      "const": "domain_knowledge"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["draft", "review", "approved", "deprecated"]
+    },
+    "domain": {
+      "type": "string",
+      "minLength": 1
+    },
+    "boundedContext": {
+      "type": "string",
+      "minLength": 1
+    },
+    "aliases": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "relationships": {
+      "type": "object",
+      "required": ["dependsOn", "relatedTo"],
+      "properties": {
+        "dependsOn": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "relatedTo": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "retrieval": {
+      "type": "object",
+      "required": ["searchable", "priority", "canonical"],
+      "properties": {
+        "searchable": {
+          "type": "boolean"
+        },
+        "priority": {
+          "type": "string",
+          "enum": ["low", "medium", "high"]
+        },
+        "canonical": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "content": {
+      "type": "object",
+      "required": ["markdown"],
+      "properties": {
+        "markdown": {
+          "type": "string"
+        },
+        "summary": {
+          "type": "string"
+        },
+        "concepts": {
+          "type": "array"
+        },
+        "businessRules": {
+          "type": "array"
+        },
+        "examples": {
+          "type": "array"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

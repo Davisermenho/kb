@@ -1,0 +1,94 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "KB: validar consistência",
+      "type": "process",
+      "command": "python3",
+      "args": [
+        "ferramentas/check_kb_consistency.py",
+        "."
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "KB: validar gates",
+      "type": "process",
+      "command": "python3",
+      "args": [
+        "ferramentas/kb_validate.py",
+        "."
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "KB: rodar testes",
+      "type": "process",
+      "command": "python3",
+      "args": [
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "KB: validar exemplo compilado",
+      "type": "process",
+      "command": "python3",
+      "args": [
+        "ferramentas/kb_compile.py",
+        "exemplos/domain_customer.md",
+        "--schema",
+        "schemas/domain_knowledge.schema.json",
+        "--check-only"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "KB: publicar run",
+      "type": "process",
+      "command": "python3",
+      "args": [
+        "ferramentas/kb_workflow.py",
+        "--directory",
+        ".",
+        "validate",
+        "--run-id",
+        "${input:runId}",
+        "--publish"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "runId",
+      "type": "promptString",
+      "description": "RUN_ID a validar para publicação",
+      "default": "RUN-AAAA-MM-DD-DESCRICAO"
+    }
+  ]
+}

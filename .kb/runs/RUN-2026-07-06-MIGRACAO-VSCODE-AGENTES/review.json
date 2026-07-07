@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "run_id": "RUN-2026-07-06-MIGRACAO-VSCODE-AGENTES",
+  "revisor": "davis",
+  "tipo_revisor": "humano",
+  "data": "2026-07-06T20:13:09-03:00",
+  "decisao": "APROVADO_COM_RESSALVAS",
+  "aprovacao_escopo": "preparacao_de_pr_ou_revisao_final_sem_merge_automatico",
+  "branch_base": "codex/reorganiza-estrutura-kb",
+  "branch_trabalho": "migration/vscode-agents-kb",
+  "base_commit": "5713a8eceb831e7ed2e607a88107020b2278e257",
+  "head_commit_revisado": "21eaf2002113269c81ef59291898bb9c7308a8bb",
+  "diff_sha256": "a63accbd0342ac4c08fe73336f13e976c31c879bddf342d285c44a2830a8ba46",
+  "ci_remoto": {
+    "status": "PASS",
+    "run_id": 28829496775,
+    "head_sha": "21eaf2002113269c81ef59291898bb9c7308a8bb",
+    "url": "https://github.com/Davisermenho/kb/actions/runs/28829496775"
+  },
+  "escopo_revisado": {
+    "arquivos_no_diff": 28,
+    "scripts_preservados": [
+      "ferramentas/check_kb_consistency.py",
+      "ferramentas/kb_validate.py",
+      "ferramentas/kb_workflow.py"
+    ],
+    "fora_do_commit": [
+      ".gitignore",
+      "governanca/migration.md"
+    ]
+  },
+  "verificacoes_confirmadas": [
+    "Fase 1 bootstrap validado.",
+    "Fase 2 configuração VS Code e agentes concluída.",
+    "Fase 3 matriz e política formalizadas.",
+    "Fase 4A comparação Drive ↔ GitHub registrada sem cópia automática.",
+    "Fase 4B schema e exemplos incorporados.",
+    "Fase 4C compilador incorporado e testado.",
+    "Fase 4D integração local e CI do compilador concluídas.",
+    "Fase 5 inventário consolidado com 73 caminhos e 73 entradas.",
+    "CI remoto do head atual concluído com sucesso."
+  ],
+  "ressalvas": [
+    "Esta revisão autoriza a preparação de PR ou revisão final; não autoriza merge automático.",
+    "A aprovação não altera ledger, KBs, schemas, exemplos, scripts preservados ou workflow de CI nesta fase.",
+    "O aviso de depreciação do Node.js 20 no GitHub Actions é anotação não bloqueante.",
+    "Após a abertura do PR, o inventário recebeu ajuste documental para explicitar que drive/ foi área local preservada/ignorada no workspace, mas não regra versionada no .gitignore.",
+    "Verdade factual externa integral, fidelidade semântica integral e julgamento humano de conflitos permanecem fora do escopo da automação."
+  ]
+}

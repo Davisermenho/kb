@@ -1,0 +1,60 @@
+{
+  "run_id": "RUN-2026-07-06-MIGRACAO-VSCODE-AGENTES",
+  "state": "VALIDADO_SEMANTICAMENTE",
+  "updated_at": "2026-07-06T20:13:09-03:00",
+  "history": [
+    {
+      "state": "RASCUNHO",
+      "at": "2026-07-06T14:05:08-03:00",
+      "reason": "Run criado para planejar a migração controlada do fluxo operacional da KB para VS Code com Claude Code e Codex."
+    },
+    {
+      "from": "RASCUNHO",
+      "state": "EXTRAÍDO",
+      "at": "2026-07-06T20:13:09-03:00",
+      "reason": "Artefatos de bootstrap, configuração, matriz, comparação, schema, exemplos, compilador, CI e inventário reunidos na branch de migração."
+    },
+    {
+      "from": "EXTRAÍDO",
+      "state": "AVALIADO",
+      "at": "2026-07-06T20:13:09-03:00",
+      "reason": "Fases 1 a 5 revisadas contra commits, evidências locais e evidências remotas."
+    },
+    {
+      "from": "AVALIADO",
+      "state": "ROTEAMENTO_PROPOSTO",
+      "at": "2026-07-06T20:13:09-03:00",
+      "reason": "Mudanças classificadas como migração operacional controlada para VS Code, agentes, schema, exemplos, compilador e inventário."
+    },
+    {
+      "from": "ROTEAMENTO_PROPOSTO",
+      "state": "REVISÃO_HUMANA",
+      "at": "2026-07-06T20:13:09-03:00",
+      "reason": "Risco alto exige revisão humana antes de preparação de PR ou merge."
+    },
+    {
+      "from": "REVISÃO_HUMANA",
+      "state": "APROVADO",
+      "at": "2026-07-06T20:13:09-03:00",
+      "reason": "Responsável humano confirmou Fase 5 local e remota, escopo preservado e próxima etapa de revisão final."
+    },
+    {
+      "from": "APROVADO",
+      "state": "PREPARADO",
+      "at": "2026-07-06T20:13:09-03:00",
+      "reason": "Branch migration/vscode-agents-kb pronta para preparação de PR, sem alterações adicionais em scripts, schemas, exemplos, ledger ou CI."
+    },
+    {
+      "from": "PREPARADO",
+      "state": "VALIDADO_ESTRUTURALMENTE",
+      "at": "2026-07-06T20:13:09-03:00",
+      "reason": "Validações locais obrigatórias e GitHub Actions do head atual concluídos com sucesso."
+    },
+    {
+      "from": "VALIDADO_ESTRUTURALMENTE",
+      "state": "VALIDADO_SEMANTICAMENTE",
+      "at": "2026-07-06T20:13:09-03:00",
+      "reason": "Revisão humana registrada em review.json; PR ou merge permanecem pendentes de autorização explícita."
+    }
+  ]
+}

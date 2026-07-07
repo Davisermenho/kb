@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "directory": "/home/davis/dev/kb",
+  "mode": "audit",
+  "scope": "bootstrap_migracao",
+  "run_id": "RUN-2026-07-06-MIGRACAO-VSCODE-AGENTES",
+  "validated_commit": "785efc565fa6dfb19547f48b1f8a912979017b8b",
+  "validated_at": "2026-07-06T14:46:16-03:00",
+  "execution_environment": "local",
+  "result": "APROVADO_LOCALMENTE",
+  "commands": [
+    {
+      "command": "python3 ferramentas/check_kb_consistency.py .",
+      "status": "PASS",
+      "summary": "12 fontes interpretadas; 11 KBs encontradas, interpretadas e com códigos únicos; invariantes ledger↔KB verificadas."
+    },
+    {
+      "command": "python3 ferramentas/kb_validate.py .",
+      "status": "PASS",
+      "summary": "Auditoria aprovada; ESCOPO_DIFF e REVISAO não aplicáveis sem RUN_ID; aviso conhecido de causalidade legada pendente."
+    },
+    {
+      "command": "python3 -m unittest discover -s tests -v",
+      "status": "PASS",
+      "summary": "19 testes executados com sucesso."
+    },
+    {
+      "command": "git diff --cached --check",
+      "status": "PASS",
+      "summary": "Nenhum erro de whitespace no diff do bootstrap."
+    }
+  ],
+  "gates": [
+    {
+      "name": "CONSISTENCIA_LEDGER_KB",
+      "status": "PASS"
+    },
+    {
+      "name": "AUDITORIA_LOCAL",
+      "status": "PASS"
+    },
+    {
+      "name": "TESTES_LOCAIS",
+      "status": "PASS",
+      "tests_run": 19
+    },
+    {
+      "name": "CI_REMOTO",
+      "status": "NOT_RUN",
+      "finding": "Nenhum workflow run ou status check remoto foi encontrado associado ao commit validado."
+    }
+  ],
+  "known_findings": [
+    "A auditoria local preservou o aviso CAUSALITY-LEGACY-REVIEW já inventariado em .kb/LEGACY_CAUSALITY_REVIEW.md."
+  ],
+  "conclusion": "Bootstrap da migração validado localmente; esta evidência não representa execução nem aprovação de CI remoto.",
+  "not_validated_by_automation": [
+    "verdade factual externa integral",
+    "fidelidade semântica integral",
+    "julgamento humano de conflitos",
+    "CI remoto do GitHub"
+  ]
+}

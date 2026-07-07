@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "run_id": "RUN-2026-07-06-MIGRACAO-VSCODE-AGENTES",
+  "objetivo": "Migrar de forma controlada a operação da Knowledge Base para GitHub e VS Code, com Claude Code e Codex sujeitos ao protocolo, ao manifesto, aos testes e à revisão humana",
+  "solicitante": "davis",
+  "criado_em": "2026-07-06T14:05:08-03:00",
+  "risco": "alto",
+  "branch_base": "codex/reorganiza-estrutura-kb",
+  "branch_trabalho": "migration/vscode-agents-kb",
+  "fontes_planejadas": [],
+  "arquivos_permitidos": [
+    ".claude/settings.json",
+    ".github/workflows/kb-validation.yml",
+    ".kb/runs/RUN-2026-07-06-MIGRACAO-VSCODE-AGENTES/comparison.json",
+    ".kb/runs/RUN-2026-07-06-MIGRACAO-VSCODE-AGENTES/draft.md",
+    ".kb/runs/RUN-2026-07-06-MIGRACAO-VSCODE-AGENTES/manifest.json",
+    ".kb/runs/RUN-2026-07-06-MIGRACAO-VSCODE-AGENTES/phase-4b-validation.json",
+    ".kb/runs/RUN-2026-07-06-MIGRACAO-VSCODE-AGENTES/phase-4c-validation.json",
+    ".kb/runs/RUN-2026-07-06-MIGRACAO-VSCODE-AGENTES/phase-4d-validation.json",
+    ".kb/runs/RUN-2026-07-06-MIGRACAO-VSCODE-AGENTES/phase-5-inventory-validation.json",
+    ".kb/runs/RUN-2026-07-06-MIGRACAO-VSCODE-AGENTES/phase-5-remote-validation.json",
+    ".kb/runs/RUN-2026-07-06-MIGRACAO-VSCODE-AGENTES/phase-4d-ci-validation.json",
+    ".kb/runs/RUN-2026-07-06-MIGRACAO-VSCODE-AGENTES/review.json",
+    ".kb/runs/RUN-2026-07-06-MIGRACAO-VSCODE-AGENTES/state.json",
+    ".kb/runs/RUN-2026-07-06-MIGRACAO-VSCODE-AGENTES/validation.json",
+    ".vscode/extensions.json",
+    ".vscode/settings.json",
+    ".vscode/tasks.json",
+    "AGENTS.md",
+    "CLAUDE.md",
+    "CODEX.md",
+    "README.md",
+    "conteudo/FONTES_REGISTRADAS.md",
+    "exemplos/domain_customer.json",
+    "exemplos/domain_customer.md",
+    "ferramentas/check_kb_consistency.py",
+    "ferramentas/kb_compile.py",
+    "governanca/MATRIZ_MIGRACAO_DRIVE_GITHUB_VSCODE.md",
+    "governanca/POLITICA_AGENTES_VSCODE.md",
+    "governanca/Inventario.md",
+    "schemas/domain_knowledge.schema.json",
+    "tests/test_agent_config.py",
+    "tests/test_domain_schema.py",
+    "tests/test_fontes_registradas.py",
+    "tests/test_kb_compile.py",
+    "tests/test_no_legacy_paths.py"
+  ],
+  "arquivos_proibidos": [
+    "governanca/migration.md",
+    ".kb/runs/RUN-2026-07-04-FLUXOV2-HOMOLOG/**",
+    ".kb/runs/RUN-2026-07-04-FLUXOV2-STATUS/**",
+    ".kb/runs/RUN-2026-07-04-MIGRACAO-CAUSALIDADE-LEGADA/**"
+  ],
+  "operacoes_permitidas": [
+    "criar",
+    "editar"
+  ],
+  "operacoes_proibidas": [
+    "excluir",
+    "renomear",
+    "sincronizar"
+  ],
+  "scripts_preservados": [
+    "ferramentas/check_kb_consistency.py",
+    "ferramentas/kb_validate.py",
+    "ferramentas/kb_workflow.py"
+  ],
+  "comandos_obrigatorios_validacao": [
+    "python3 ferramentas/check_kb_consistency.py .",
+    "python3 ferramentas/kb_validate.py .",
+    "python3 -m unittest discover -s tests -v"
+  ],
+  "criterios_rollback": [
+    "qualquer comando obrigatório de validação falhar",
+    "o diff incluir arquivo não autorizado",
+    "um hook, task ou workflow depender de caminho absoluto ou inexistente",
+    "a mesclagem do ledger perder ou duplicar registro operacional",
+    "a revisão humana rejeitar mudança de arquitetura ou conflito semântico"
+  ],
+  "procedimento_rollback": "Não promover nem mesclar a branch; reverter somente os commits da migração na branch de trabalho, preservando os runs históricos e a branch base.",
+  "agentes_autorizados": [
+    "Claude Code",
+    "Codex"
+  ],
+  "restricoes_agentes": [
+    "operar somente na branch de trabalho",
+    "alterar somente arquivos permitidos pelo manifesto",
+    "não publicar nem mesclar sem revisão e aprovação humana",
+    "parar e solicitar decisão humana diante de conflito semântico, exclusão ou mudança arquitetural não prevista"
+  ],
+  "estado_inicial_commit": "5713a8eceb831e7ed2e607a88107020b2278e257",
+  "alteracoes_preexistentes": [
+    "?? governanca/migration.md"
+  ],
+  "snapshot_preexistente": {
+    "governanca/migration.md": "4fbbe13f690d4e811186ddc628ff77b195dd4b34c527f60f73b5324d68179167"
+  },
+  "causalidade": [],
+  "aprovacoes_exigidas": [
+    "humano"
+  ]
+}

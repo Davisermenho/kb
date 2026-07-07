@@ -1,0 +1,182 @@
+{
+  "schema_version": 1,
+  "run_id": "RUN-2026-07-06-MIGRACAO-VSCODE-AGENTES",
+  "phase": "4A",
+  "generated_at": "2026-07-06T15:23:43-03:00",
+  "mode": "read_only_comparison",
+  "source_root": "drive/",
+  "source_root_ignored_by_git": true,
+  "source_code_executed": false,
+  "workspace_preexisting_changes": [
+    "M .gitignore",
+    "?? governanca/migration.md"
+  ],
+  "summary": {
+    "artifacts_requested": 6,
+    "drive_artifacts_found": 6,
+    "github_destinations_existing": 2,
+    "github_destinations_absent": 4,
+    "identical_artifacts": 0,
+    "operational_files_modified": 0,
+    "conclusion": "Comparação concluída; nenhuma origem pode ser copiada ou usada para substituir automaticamente um destino."
+  },
+  "artifacts": [
+    {
+      "name": "FONTES_REGISTRADAS.md",
+      "drive_path": "drive/FONTES_REGISTRADAS.md",
+      "github_path": "conteudo/FONTES_REGISTRADAS.md",
+      "github_status": "EXISTENTE",
+      "drive_sha256": "6935da6639b527bea7e735c6699cd57cc6b85274818a0053bd8e5fbd24593960",
+      "github_sha256": "b963c17fd417b5f02cc5373542087796bd5055f7f48398ac66f040b80a86c61c",
+      "identical": false,
+      "metrics": {
+        "drive_lines": 161,
+        "github_lines": 556,
+        "drive_source_ids": 10,
+        "github_source_ids": 12,
+        "shared_source_ids": 0
+      },
+      "drive_only_ids": [
+        "FONTE-2026-COMPILE-SCRIPT",
+        "FONTE-2026-CONSISTENCIA-SCRIPT",
+        "FONTE-2026-DOMAIN-CUSTOMER-JSON",
+        "FONTE-2026-DOMAIN-CUSTOMER-MD",
+        "FONTE-2026-DOMAIN-SCHEMA",
+        "FONTE-2026-KB-DECISOES",
+        "FONTE-2026-KB-MAE",
+        "FONTE-2026-KB-PIPELINE",
+        "FONTE-2026-KB-REGISTRY",
+        "FONTE-2026-REGDEC-DECISOES-BASE"
+      ],
+      "findings": [
+        "O ledger do GitHub é maior e contém campos adicionais exigidos pela governança atual.",
+        "Não há colisão literal de ID_FONTE, mas isso não elimina duplicidade semântica.",
+        "Os dez registros do Drive precisam de triagem, pontuação, roteamento e revisão antes de eventual mesclagem."
+      ],
+      "decision": "PRESERVAR_GITHUB_E_REVISAR_REGISTROS_DO_DRIVE",
+      "next_phase": "Comparação semântica individual e proposta de mesclagem idempotente; proibida sobrescrita integral."
+    },
+    {
+      "name": "check_kb_consistency.py",
+      "drive_path": "drive/check_kb_consistency.py",
+      "github_path": "ferramentas/check_kb_consistency.py",
+      "github_status": "EXISTENTE",
+      "drive_sha256": "94f8616f772ec347309a07c16eb135397b3ed867ec3726eaab4559cf1504c23d",
+      "github_sha256": "39868a35c24fc7cc7fc54d68f6eef3a087e895bc09a5f5935069aca881075148",
+      "identical": false,
+      "metrics": {
+        "drive_lines": 187,
+        "github_lines": 385,
+        "drive_top_level_functions": 7,
+        "github_top_level_functions": 15,
+        "drive_top_level_classes": 0,
+        "github_top_level_classes": 5
+      },
+      "findings": [
+        "A versão do Drive procura FONTES_REGISTRADAS.md e KB-*.md no mesmo diretório.",
+        "A versão do GitHub usa kb_paths.py e os paths canônicos conteudo/dominios e conteudo/projetos.",
+        "A versão do GitHub possui relatório estruturado, saída JSON, erros operacionais explícitos e validações adicionais.",
+        "A versão do Drive não foi executada; sua estrutura foi analisada estaticamente."
+      ],
+      "decision": "PRESERVAR_GITHUB",
+      "next_phase": "Somente incorporar capacidade específica do Drive se um teste demonstrar lacuna na implementação atual."
+    },
+    {
+      "name": "domain_knowledge.schema.json",
+      "drive_path": "drive/domain_knowledge.schema.json",
+      "github_path": "schemas/domain_knowledge.schema.json",
+      "github_status": "AUSENTE",
+      "drive_sha256": "4682e19fc9349f84dadcb88cf1845eb04959498374200b1c47d9dacf38c228e4",
+      "drive_lines": 121,
+      "json_parse": "PASS",
+      "schema_dialect": "https://json-schema.org/draft/2020-12/schema",
+      "schema_check": "PASS",
+      "example_validation": "PASS",
+      "findings": [
+        "O schema é sintaticamente válido e rejeita propriedades adicionais no objeto raiz.",
+        "O exemplo domain_customer.json satisfaz o schema usando jsonschema 4.10.3."
+      ],
+      "decision": "CANDIDATO_FASE_4B",
+      "next_phase": "Versionar junto do exemplo e de testes de contrato, após aprovação."
+    },
+    {
+      "name": "domain_customer.md",
+      "drive_path": "drive/domain_customer.md",
+      "github_path": "exemplos/domain_customer.md",
+      "github_status": "AUSENTE",
+      "drive_sha256": "c30a5c3fb47bb11868342b3acd1258e3fffcd1b313fc60c4dc9be3c3bde538e5",
+      "drive_lines": 34,
+      "frontmatter_parse": "PASS",
+      "comparison_to_json": "MATCH_FRONTMATTER_PLUS_BODY",
+      "findings": [
+        "O front matter contém todos os campos raiz exigidos pelo schema.",
+        "A inclusão do corpo Markdown em content.markdown produz exatamente domain_customer.json."
+      ],
+      "decision": "CANDIDATO_FASE_4B",
+      "next_phase": "Versionar junto do schema e do JSON esperado, após aprovação."
+    },
+    {
+      "name": "domain_customer.json",
+      "drive_path": "drive/domain_customer.json",
+      "github_path": "exemplos/domain_customer.json",
+      "github_status": "AUSENTE",
+      "drive_sha256": "f7087d409da2e271c4811c0aef66bcd1fbd6d55f87deb980ae2aa5127ba4c23e",
+      "drive_lines": 39,
+      "json_parse": "PASS",
+      "schema_validation": "PASS",
+      "comparison_to_markdown": "MATCH_FRONTMATTER_PLUS_BODY",
+      "decision": "CANDIDATO_FASE_4B",
+      "next_phase": "Versionar como saída esperada e cobrir com teste de schema, após aprovação."
+    },
+    {
+      "name": "kb_compile.py",
+      "drive_path": "drive/kb_compile.py",
+      "github_path": "ferramentas/kb_compile.py",
+      "github_status": "AUSENTE",
+      "drive_sha256": "fefcb4d2fc92fc52cb881bce6c8a706e7fb41df080733a2ebe0aadfd08c3293a",
+      "drive_lines": 358,
+      "static_parse": "PASS",
+      "executed": false,
+      "structure": {
+        "top_level_classes": [
+          "CompileError",
+          "ValidationIssue"
+        ],
+        "top_level_functions": [
+          "split_frontmatter",
+          "parse_scalar",
+          "parse_simple_yaml",
+          "normalize_entry",
+          "schema_type_matches",
+          "validate_json_schema",
+          "load_json",
+          "compile_markdown",
+          "build_parser",
+          "main"
+        ]
+      },
+      "findings": [
+        "O arquivo é analisável pela AST do Python.",
+        "O script implementa parser YAML próprio e validador JSON Schema parcial; isso exige testes antes de adoção.",
+        "Nenhum código proveniente do Drive foi executado durante a Fase 4A."
+      ],
+      "decision": "CANDIDATO_FASE_4C_COM_REVISAO",
+      "next_phase": "Revisar segurança e compatibilidade, incorporar em commit separado e adicionar testes antes de tratá-lo como operacional."
+    }
+  ],
+  "phase_4a_decision": {
+    "copy_or_merge_authorized": false,
+    "recommended_4b_scope": [
+      "schemas/domain_knowledge.schema.json",
+      "exemplos/domain_customer.md",
+      "exemplos/domain_customer.json"
+    ],
+    "recommended_4c_scope": [
+      "ferramentas/kb_compile.py"
+    ],
+    "blocked_items": [
+      "Mesclagem de FONTES_REGISTRADAS.md depende de revisão semântica individual dos dez registros do Drive.",
+      "Substituição de ferramentas/check_kb_consistency.py não é recomendada; o destino atual é mais aderente à arquitetura do repositório."
+    ]
+  }
+}

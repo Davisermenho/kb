@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "run_id": "RUN-2026-07-06-MIGRACAO-VSCODE-AGENTES",
+  "phase": "5-inventory",
+  "validated_at": "2026-07-06T19:36:53-03:00",
+  "environment": "local",
+  "base_commit": "db4cbfe109ade8ae1fa95827f6431ab10abaf2e7",
+  "result": "APROVADO_LOCALMENTE",
+  "scope": {
+    "updated_files": [
+      ".kb/runs/RUN-2026-07-06-MIGRACAO-VSCODE-AGENTES/manifest.json",
+      "governanca/Inventario.md",
+      ".kb/runs/RUN-2026-07-06-MIGRACAO-VSCODE-AGENTES/phase-5-inventory-validation.json"
+    ],
+    "preserved_uncommitted_files": [
+      ".gitignore",
+      "governanca/migration.md"
+    ],
+    "operational_files_changed": false,
+    "drive_content_changed": false
+  },
+  "inventory_completeness": {
+    "enumeration_command": "git ls-files --cached --others --exclude-standard | sort",
+    "entry_extraction_command": "rg '^#### `' governanca/Inventario.md",
+    "enumerated_paths": 73,
+    "documented_entries": 73,
+    "missing_documented_entries": [],
+    "extra_documented_entries": []
+  },
+  "validations": [
+    {
+      "command": "python3 ferramentas/check_kb_consistency.py .",
+      "result": "PASS",
+      "summary": "OK ESTRUTURAL: invariantes ledger↔KB verificadas."
+    },
+    {
+      "command": "python3 ferramentas/kb_validate.py .",
+      "result": "PASS_WITH_KNOWN_WARNING",
+      "summary": "Resultado APROVADO em modo audit; CAUSALIDADE mantém aviso conhecido de alegação causal legada inventariada."
+    },
+    {
+      "command": "python3 -m unittest discover -s tests -v",
+      "result": "PASS",
+      "summary": "26 testes executados com sucesso."
+    }
+  ],
+  "ci_remote": {
+    "result": "NOT_RUN_FOR_THIS_COMMIT",
+    "note": "A Fase 5 registra validação local; CI remoto só deve ser alegado após workflow/status real associado ao commit desta fase."
+  },
+  "conclusion": "Inventário consolidado e validado localmente; todos os caminhos catalogáveis possuem entrada individual e as validações obrigatórias passaram."
+}

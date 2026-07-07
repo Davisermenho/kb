@@ -6,15 +6,15 @@ Este documento cataloga a árvore de arquivos que compõe a Base de Conhecimento
 
 **Data da auditoria:** 2026-07-06
 
-**Branch auditada:** `codex/reorganiza-estrutura-kb`
+**Branch auditada:** `migration/vscode-agents-kb`
 
-**Total catalogado:** 49 arquivos, contando `governanca/Inventario.md`
+**Total catalogado:** 73 arquivos, contando `governanca/Inventario.md`, a evidência desta fase e o arquivo local não rastreado `governanca/migration.md`.
 
 **Método de completude:** enumeração por `git ls-files --cached --others --exclude-standard`, leitura da estrutura e do conteúdo de cada arquivo e comparação final entre a lista de caminhos e as entradas deste documento.
 
 ## 2. Visão arquitetural
 
-O repositório está organizado em seis camadas principais:
+O repositório está organizado em oito camadas principais:
 
 1. **Conteúdo canônico:** ledger mestre e bases de conhecimento em `conteudo/`.
 2. **Governança:** protocolo, arquitetura, template e contratos em `governanca/`.
@@ -22,6 +22,8 @@ O repositório está organizado em seis camadas principais:
 4. **Estado operacional:** manifests, estados, revisões e resultados em `.kb/`.
 5. **Planejamento:** planos de evolução em `planos/`.
 6. **Verificação:** testes e fixtures em `tests/`.
+7. **Contratos e exemplos:** schema operacional em `schemas/` e pares canônicos em `exemplos/`.
+8. **Ambiente agentivo:** contratos na raiz e configuração versionada em `.claude/` e `.vscode/`.
 
 O fluxo central é: uma fonte é triada conforme o protocolo, registrada no ledger, roteada para uma ou mais KBs, validada pelos checkers e publicada dentro de um `RUN_ID` com escopo, estado, revisão e evidências auditáveis.
 
@@ -39,9 +41,30 @@ O fluxo central é: uma fonte é triada conforme o protocolo, registrada no ledg
 #### `.gitignore`
 
 - **Nome:** .gitignore
-- **Descrição:** regras de exclusão para `__pycache__/`, bytecode Python, `.venv/` e `.kb/locks/`.
+- **Descrição:** regras versionadas de exclusão para `__pycache__/`, bytecode Python, `.venv/` e `.kb/locks/`.
 - **Função e objetivo:** impedir versionamento de dependências locais, artefatos derivados e locks transitórios.
-- **Papel:** higiene do versionamento e proteção do pipeline contra estado local acidental.
+- **Papel:** higiene do versionamento e proteção do pipeline contra estado local acidental. A pasta `drive/` foi usada como área local de importação preservada no workspace, mas não foi incorporada como regra versionada neste arquivo.
+
+#### `AGENTS.md`
+
+- **Nome:** AGENTS.md
+- **Descrição:** contrato operacional comum carregado pelos agentes, com leituras obrigatórias, limites de escopo, validações e condições de parada.
+- **Função e objetivo:** transformar protocolo, branch, `RUN_ID`, manifesto e revisão em pré-condições explícitas para qualquer alteração agentiva.
+- **Papel:** porta de entrada comum para Claude Code e Codex; aponta para a governança canônica sem substituí-la.
+
+#### `CLAUDE.md`
+
+- **Nome:** CLAUDE.md
+- **Descrição:** instruções específicas do Claude Code sobre análise estrutural, documentação, hook e limites de publicação.
+- **Função e objetivo:** especializar o papel do Claude Code sem duplicar as regras comuns de `AGENTS.md`.
+- **Papel:** complemento operacional para sessões do Claude Code.
+
+#### `CODEX.md`
+
+- **Nome:** CODEX.md
+- **Descrição:** guia complementar do Codex para implementação, testes, automação local e relato preciso de evidências.
+- **Função e objetivo:** definir responsabilidades específicas e impedir alegações de CI remoto baseadas apenas em execução local.
+- **Papel:** complemento de `AGENTS.md`; não é tratado como arquivo de descoberta automática do Codex.
 
 ### 3.2 Integrações de automação
 
@@ -50,7 +73,7 @@ O fluxo central é: uma fonte é triada conforme o protocolo, registrada no ledg
 - **Nome:** settings.json
 - **Descrição:** configuração local do Claude Code que registra um hook no evento `Stop`.
 - **Função e objetivo:** executar o checker de encerramento com timeout de 30 segundos ao fim de uma sessão.
-- **Papel:** integração local do pipeline; aciona `.claude/hooks/kb_consistency_hook.py`. O comando contém caminho absoluto e, portanto, é específico deste checkout.
+- **Papel:** integração local portátil do pipeline; aciona `.claude/hooks/kb_consistency_hook.py` por caminho relativo à raiz do repositório.
 
 #### `.claude/hooks/kb_consistency_hook.py`
 
@@ -63,8 +86,29 @@ O fluxo central é: uma fonte é triada conforme o protocolo, registrada no ledg
 
 - **Nome:** kb-validation.yml
 - **Descrição:** workflow do GitHub Actions disparado em pushes e pull requests.
-- **Função e objetivo:** preparar Python 3.12, executar testes unitários/de integração, o checker estrutural e os gates de auditoria.
+- **Função e objetivo:** preparar Python 3.12, executar testes unitários/de integração, validar o exemplo compilado, executar o checker estrutural e os gates de auditoria.
 - **Papel:** controle remoto de qualidade e regressão. Reexecuta validações fora do ambiente local e fornece sinal de CI para integração de mudanças.
+
+#### `.vscode/extensions.json`
+
+- **Nome:** extensions.json
+- **Descrição:** recomenda extensões para Claude Code, Codex, Python, YAML, Markdown e catálogo de JSON Schema.
+- **Função e objetivo:** facilitar a preparação do VS Code sem tornar o repositório dependente da interface gráfica.
+- **Papel:** configuração compartilhada e não executável do ambiente local.
+
+#### `.vscode/settings.json`
+
+- **Nome:** settings.json
+- **Descrição:** define EOL, newline final, validação JSON/YAML, interpretador Python e diretório inicial do terminal.
+- **Função e objetivo:** manter comportamento local portátil e previsível, sem caminhos absolutos de máquina.
+- **Papel:** configuração canônica mínima do workspace VS Code.
+
+#### `.vscode/tasks.json`
+
+- **Nome:** tasks.json
+- **Descrição:** expõe consistência, gates, testes, compilação do exemplo e publicação de run como tasks do VS Code.
+- **Função e objetivo:** reproduzir comandos canônicos sem depender de memorização manual.
+- **Papel:** adaptador de execução local; não reimplementa regras dos scripts.
 
 ### 3.3 Estado operacional do Fluxo V2
 
@@ -166,6 +210,69 @@ O fluxo central é: uma fonte é triada conforme o protocolo, registrada no ledg
 - **Função e objetivo:** persistir o início da máquina de estados.
 - **Papel:** evidência de que o run foi criado, mas não avançou no pipeline.
 
+#### `.kb/runs/RUN-2026-07-06-MIGRACAO-VSCODE-AGENTES/manifest.json`
+
+- **Nome:** manifest.json
+- **Descrição:** manifesto de risco alto da migração para VS Code e agentes, com branch base, escopo autorizado, rollback, agentes e validações obrigatórias.
+- **Função e objetivo:** controlar todas as fases da migração e impedir alterações fora dos caminhos e operações declarados.
+- **Papel:** contrato transacional ativo da migração; preserva também snapshots das mudanças preexistentes.
+
+#### `.kb/runs/RUN-2026-07-06-MIGRACAO-VSCODE-AGENTES/state.json`
+
+- **Nome:** state.json
+- **Descrição:** estado inicial `RASCUNHO` do run de migração e seu primeiro evento histórico.
+- **Função e objetivo:** registrar o início da máquina de estados sem declarar publicação antecipada.
+- **Papel:** trilha transacional ainda aberta; as fases concluídas são demonstradas pelas evidências específicas.
+
+#### `.kb/runs/RUN-2026-07-06-MIGRACAO-VSCODE-AGENTES/validation.json`
+
+- **Nome:** validation.json
+- **Descrição:** evidência local do bootstrap no commit `785efc5`, com consistência, auditoria, 19 testes e CI remoto não executado.
+- **Função e objetivo:** fechar a validação inicial sem misturá-la com alterações operacionais posteriores.
+- **Papel:** evidência histórica local, não equivalente a publicação ou aprovação remota.
+
+#### `.kb/runs/RUN-2026-07-06-MIGRACAO-VSCODE-AGENTES/comparison.json`
+
+- **Nome:** comparison.json
+- **Descrição:** comparação somente leitura dos seis artefatos operacionais vindos do Drive com seus destinos canônicos.
+- **Função e objetivo:** registrar hashes, diferenças, destinos ausentes e decisões antes de qualquer cópia ou mesclagem.
+- **Papel:** evidência da Fase 4A; bloqueia sobrescrita do ledger e substituição do checker atual.
+
+#### `.kb/runs/RUN-2026-07-06-MIGRACAO-VSCODE-AGENTES/phase-4b-validation.json`
+
+- **Nome:** phase-4b-validation.json
+- **Descrição:** validação local da incorporação do schema e dos exemplos, com hashes idênticos ao Drive e 21 testes aprovados.
+- **Função e objetivo:** provar compatibilidade schema↔JSON e equivalência front matter + corpo↔JSON.
+- **Papel:** evidência local da Fase 4B; declara CI remoto não executado naquele commit.
+
+#### `.kb/runs/RUN-2026-07-06-MIGRACAO-VSCODE-AGENTES/phase-4c-validation.json`
+
+- **Nome:** phase-4c-validation.json
+- **Descrição:** validação local do compilador, incluindo hash de origem, geração canônica, erros esperados e 26 testes aprovados.
+- **Função e objetivo:** demonstrar que `kb_compile.py` foi incorporado separadamente e reproduz o exemplo oficial.
+- **Papel:** evidência da Fase 4C, sem alegação de CI remoto.
+
+#### `.kb/runs/RUN-2026-07-06-MIGRACAO-VSCODE-AGENTES/phase-4d-validation.json`
+
+- **Nome:** phase-4d-validation.json
+- **Descrição:** validação local da task VS Code e da documentação do comando de compilação.
+- **Função e objetivo:** comprovar a integração local do compilador sem alterar workflow, schema, exemplos, checker ou ledger.
+- **Papel:** evidência da subfase 4D-local.
+
+#### `.kb/runs/RUN-2026-07-06-MIGRACAO-VSCODE-AGENTES/phase-4d-ci-validation.json`
+
+- **Nome:** phase-4d-ci-validation.json
+- **Descrição:** evidência local e remota da integração do compilador ao GitHub Actions, vinculada ao commit `17808b5` e ao run `28816681270`.
+- **Função e objetivo:** comprovar que testes, compilação, checker e auditoria passaram no ambiente remoto.
+- **Papel:** primeira evidência de CI remoto da migração; registra separadamente aviso não bloqueante de runtime das actions.
+
+#### `.kb/runs/RUN-2026-07-06-MIGRACAO-VSCODE-AGENTES/phase-5-inventory-validation.json`
+
+- **Nome:** phase-5-inventory-validation.json
+- **Descrição:** evidência de completude e validação do inventário consolidado após as Fases 1–4D.
+- **Função e objetivo:** comparar mecanicamente caminhos catalogáveis e entradas individuais, além de registrar testes e gates.
+- **Papel:** evidência da Fase 5 criada no mesmo conjunto lógico desta atualização.
+
 ### 3.4 Conteúdo canônico e ledger
 
 #### `conteudo/FONTES_REGISTRADAS.md`
@@ -252,7 +359,30 @@ O fluxo central é: uma fonte é triada conforme o protocolo, registrada no ledg
 - **Função e objetivo:** separar conhecimento genérico de contexto/documentação/curadoria das mudanças concretas no protocolo, arquitetura, template, ledger e scripts.
 - **Papel:** destino `KB-PROJ-05`, importante para rastreabilidade causal. Algumas alegações históricas nele contidas estão inventariadas para revisão em `.kb/LEGACY_CAUSALITY_REVIEW.md`.
 
-### 3.5 Ferramentas executáveis
+### 3.5 Contratos e exemplos operacionais
+
+#### `schemas/domain_knowledge.schema.json`
+
+- **Nome:** domain_knowledge.schema.json
+- **Descrição:** JSON Schema Draft 2020-12 para entradas `domain_knowledge`, com campos obrigatórios, enums, padrões e proibição de propriedades adicionais.
+- **Função e objetivo:** validar a estrutura canônica produzida pelo compilador.
+- **Papel:** contrato operacional versionado; validado diretamente pelo teste de domínio e usado por `kb_compile.py` localmente e na CI.
+
+#### `exemplos/domain_customer.md`
+
+- **Nome:** domain_customer.md
+- **Descrição:** exemplo de entrada Markdown com front matter conservador para o domínio de cliente.
+- **Função e objetivo:** demonstrar os metadados e o corpo aceitos pelo compilador.
+- **Papel:** fixture canônica de entrada, preservada byte a byte da origem do Drive.
+
+#### `exemplos/domain_customer.json`
+
+- **Nome:** domain_customer.json
+- **Descrição:** saída JSON esperada da compilação de `domain_customer.md` contra o schema operacional.
+- **Função e objetivo:** permitir comparação determinística e teste de não regressão.
+- **Papel:** fixture canônica de saída; satisfaz o schema e corresponde ao front matter combinado com o corpo Markdown.
+
+### 3.6 Ferramentas executáveis
 
 #### `ferramentas/kb_paths.py`
 
@@ -268,6 +398,13 @@ O fluxo central é: uma fonte é triada conforme o protocolo, registrada no ledg
 - **Função e objetivo:** ler UTF-8, analisar seções e campos, validar IDs/status/destinos, detectar duplicatas e colisões e conferir consistência bidirecional ledger↔KB.
 - **Papel:** motor determinístico de integridade. É chamado diretamente, pelos gates, pela CI e coberto por `tests/test_check_kb_consistency.py`.
 
+#### `ferramentas/kb_compile.py`
+
+- **Nome:** kb_compile.py
+- **Descrição:** compilador em biblioteca padrão que converte Markdown com subconjunto conservador de YAML front matter para JSON e valida o contrato aplicável.
+- **Função e objetivo:** produzir ou conferir JSON canônico, distinguindo falha de validação de erro operacional.
+- **Papel:** ferramenta operacional coberta por testes, task VS Code, README e step próprio do GitHub Actions.
+
 #### `ferramentas/kb_validate.py`
 
 - **Nome:** kb_validate.py
@@ -282,7 +419,7 @@ O fluxo central é: uma fonte é triada conforme o protocolo, registrada no ledg
 - **Função e objetivo:** criar manifests e drafts, registrar snapshots preexistentes, operar máquina de estados, adquirir/liberar lock, executar validação e consultar candidatos a duplicidade.
 - **Papel:** camada transacional do pipeline. Implementa proveniência, contenção de escopo, concorrência local e comandos operacionais.
 
-### 3.6 Governança
+### 3.7 Governança
 
 #### `governanca/Inventario.md`
 
@@ -326,7 +463,28 @@ O fluxo central é: uma fonte é triada conforme o protocolo, registrada no ledg
 - **Função e objetivo:** pretende centralizar instruções de revisão por papel.
 - **Papel:** artefato de governança ainda incompleto. No estado atual não contém prompts utilizáveis, critérios, entradas ou formatos de saída; portanto não deve ser tratado como mecanismo de revisão implementado.
 
-### 3.7 Planos de evolução
+#### `governanca/MATRIZ_MIGRACAO_DRIVE_GITHUB_VSCODE.md`
+
+- **Nome:** MATRIZ_MIGRACAO_DRIVE_GITHUB_VSCODE.md
+- **Descrição:** matriz de artefatos, destinos, fonte de verdade, status, validadores, agentes e cautelas de migração.
+- **Função e objetivo:** separar planejamento de migração de autorização para copiar ou sobrescrever arquivos.
+- **Papel:** plano de controle que mantém GitHub como fonte operacional, Drive como referência e VS Code como ambiente.
+
+#### `governanca/POLITICA_AGENTES_VSCODE.md`
+
+- **Nome:** POLITICA_AGENTES_VSCODE.md
+- **Descrição:** política de papéis, precedência, revisão, handoff, validação e condições de parada para Claude Code, Codex e humano.
+- **Função e objetivo:** impedir autopublicação, autorrevisão e ampliação silenciosa de escopo.
+- **Papel:** governança multiagente complementar ao protocolo, ao manifesto e a `AGENTS.md`.
+
+#### `governanca/migration.md`
+
+- **Nome:** migration.md
+- **Descrição:** plano local que descreve a migração controlada do Drive para GitHub e VS Code e sua sequência recomendada.
+- **Função e objetivo:** orientar as fases da migração e seus critérios de aceite.
+- **Papel:** arquivo não rastreado e explicitamente fora dos commits da migração; é catalogado porque permanece não ignorado, mas não constitui estado operacional publicado.
+
+### 3.8 Planos de evolução
 
 #### `planos/FLUXOV2.md`
 
@@ -349,7 +507,7 @@ O fluxo central é: uma fonte é triada conforme o protocolo, registrada no ledg
 - **Função e objetivo:** especificar contrato, arquitetura interna, quinze ações, matriz de testes, migração do hook e definição de pronto.
 - **Papel:** registro de desenho e implementação de `check_kb_consistency.py`; ajuda a explicar decisões e expectativas de regressão.
 
-### 3.8 Testes e fixtures
+### 3.9 Testes e fixtures
 
 #### `tests/test_check_kb_consistency.py`
 
@@ -364,6 +522,20 @@ O fluxo central é: uma fonte é triada conforme o protocolo, registrada no ledg
 - **Descrição:** suíte `unittest` do workflow e de integrações selecionadas.
 - **Função e objetivo:** testar criação e duplicidade de run, lock atômico, máquina de estados, busca prévia de duplicatas, preflight e exclusão de artefatos do run no diff de revisão.
 - **Papel:** validação da camada transacional e de escopo do pipeline.
+
+#### `tests/test_domain_schema.py`
+
+- **Nome:** test_domain_schema.py
+- **Descrição:** testes em biblioteca padrão para o contrato JSON Schema e a equivalência entre o exemplo Markdown e o JSON canônico.
+- **Função e objetivo:** detectar regressões em campos obrigatórios, tipos, enums, padrões, propriedades extras e transformação front matter + corpo.
+- **Papel:** proteção do schema e dos exemplos sem dependência externa instalada na CI.
+
+#### `tests/test_kb_compile.py`
+
+- **Nome:** test_kb_compile.py
+- **Descrição:** testes da CLI do compilador para validação, geração canônica e falhas de front matter, schema JSON e campo obrigatório.
+- **Função e objetivo:** verificar códigos de saída e igualdade do JSON gerado com o exemplo versionado.
+- **Papel:** proteção de regressão do compilador; atualmente adiciona cinco casos à suíte.
 
 #### `tests/fixtures/valid/agent_roles_valid.yaml`
 
@@ -422,14 +594,16 @@ O fluxo central é: uma fonte é triada conforme o protocolo, registrada no ledg
 
 ## 5. Achados da auditoria
 
-1. **Cobertura do inventário:** todos os 49 caminhos catalogáveis, incluindo este inventário, possuem uma entrada individual neste documento.
+1. **Cobertura do inventário:** todos os 73 caminhos catalogáveis, incluindo este inventário, a evidência da Fase 5 e `governanca/migration.md`, possuem uma entrada individual neste documento.
 2. **Fixtures incompletas:** os dois YAMLs em `tests/fixtures/invalid/` estão vazios e não são usados pelos testes atuais.
 3. **Fixture válida desconectada:** `agent_roles_valid.yaml` tem conteúdo, mas também não é carregado pela suíte atual.
 4. **Prompts não implementados:** `governanca/PROMPTS_REVISAO.md` é somente um esqueleto.
 5. **Run pendente:** a migração de causalidade legada permanece em `RASCUNHO`, sem `review.json` ou `validation.json`.
 6. **Evidência histórica:** manifests antigos contêm alguns caminhos anteriores à reorganização atual; isso é coerente como registro histórico, mas esses caminhos não descrevem a árvore presente.
-7. **Portabilidade local:** `.claude/settings.json` usa um caminho absoluto para o hook e requer ajuste em outro checkout.
-8. **Separação entre plano e implementação:** `GATES_PLANOS.md` especifica uma arquitetura mais ampla que a suíte de gates hoje existente; o plano não deve ser confundido com funcionalidade entregue.
+7. **Portabilidade local corrigida:** `.claude/settings.json` aciona o hook por caminho relativo; a configuração anterior com caminho absoluto permanece apenas como contexto histórico.
+8. **Compilador integrado:** `kb_compile.py` agora possui schema, exemplos, testes, task local e step de CI, sem substituir o checker estrutural nem alterar o ledger.
+9. **Separação entre plano e implementação:** `GATES_PLANOS.md` especifica uma arquitetura mais ampla que a suíte de gates hoje existente; o plano não deve ser confundido com funcionalidade entregue.
+10. **Artefatos locais fora do commit:** `governanca/migration.md` continua não rastreado e `drive/` permanece área local preservada/ignorada no workspace; essa preservação de `drive/` não foi versionada como regra do `.gitignore`. Ambos são contexto de migração, não publicação operacional.
 
 ### 5.1 Consultas negativas preservadas da auditoria comparativa
 
