@@ -41,9 +41,9 @@ O fluxo central é: uma fonte é triada conforme o protocolo, registrada no ledg
 #### `.gitignore`
 
 - **Nome:** .gitignore
-- **Descrição:** regras de exclusão para `__pycache__/`, bytecode Python, `.venv/`, `.kb/locks/` e a área local de importação `drive/`.
+- **Descrição:** regras versionadas de exclusão para `__pycache__/`, bytecode Python, `.venv/` e `.kb/locks/`.
 - **Função e objetivo:** impedir versionamento de dependências locais, artefatos derivados e locks transitórios.
-- **Papel:** higiene do versionamento e proteção do pipeline contra estado local acidental.
+- **Papel:** higiene do versionamento e proteção do pipeline contra estado local acidental. A pasta `drive/` foi usada como área local de importação preservada no workspace, mas não foi incorporada como regra versionada neste arquivo.
 
 #### `AGENTS.md`
 
@@ -603,7 +603,7 @@ O fluxo central é: uma fonte é triada conforme o protocolo, registrada no ledg
 7. **Portabilidade local corrigida:** `.claude/settings.json` aciona o hook por caminho relativo; a configuração anterior com caminho absoluto permanece apenas como contexto histórico.
 8. **Compilador integrado:** `kb_compile.py` agora possui schema, exemplos, testes, task local e step de CI, sem substituir o checker estrutural nem alterar o ledger.
 9. **Separação entre plano e implementação:** `GATES_PLANOS.md` especifica uma arquitetura mais ampla que a suíte de gates hoje existente; o plano não deve ser confundido com funcionalidade entregue.
-10. **Artefatos locais fora do commit:** `governanca/migration.md` continua não rastreado e `drive/` permanece área local ignorada; ambos são contexto de migração, não publicação operacional.
+10. **Artefatos locais fora do commit:** `governanca/migration.md` continua não rastreado e `drive/` permanece área local preservada/ignorada no workspace; essa preservação de `drive/` não foi versionada como regra do `.gitignore`. Ambos são contexto de migração, não publicação operacional.
 
 ### 5.1 Consultas negativas preservadas da auditoria comparativa
 

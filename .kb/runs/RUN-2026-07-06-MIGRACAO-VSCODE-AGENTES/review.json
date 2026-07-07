@@ -10,7 +10,7 @@
   "branch_trabalho": "migration/vscode-agents-kb",
   "base_commit": "5713a8eceb831e7ed2e607a88107020b2278e257",
   "head_commit_revisado": "21eaf2002113269c81ef59291898bb9c7308a8bb",
-  "diff_sha256": "25b8ea97c8d8fd71771eb64c36ad6d3bc8cd322bc09335f4f17e597fdcfc0abf",
+  "diff_sha256": "a63accbd0342ac4c08fe73336f13e976c31c879bddf342d285c44a2830a8ba46",
   "ci_remoto": {
     "status": "PASS",
     "run_id": 28829496775,
@@ -44,6 +44,7 @@
     "Esta revisão autoriza a preparação de PR ou revisão final; não autoriza merge automático.",
     "A aprovação não altera ledger, KBs, schemas, exemplos, scripts preservados ou workflow de CI nesta fase.",
     "O aviso de depreciação do Node.js 20 no GitHub Actions é anotação não bloqueante.",
+    "Após a abertura do PR, o inventário recebeu ajuste documental para explicitar que drive/ foi área local preservada/ignorada no workspace, mas não regra versionada no .gitignore.",
     "Verdade factual externa integral, fidelidade semântica integral e julgamento humano de conflitos permanecem fora do escopo da automação."
   ]
 }
